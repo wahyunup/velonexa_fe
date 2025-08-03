@@ -1,42 +1,62 @@
-import { IoKeyOutline } from "react-icons/io5"
-import { PiUser } from "react-icons/pi"
-import Input from "../ui/input"
-import { useState } from "react";
+import { IoKeyOutline } from "react-icons/io5";
+import { PiUser } from "react-icons/pi";
+import Input from "../ui/Input";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { toast,ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const PartialLogin = ({navigate, classname}:{navigate:() => void, classname:string }) => {
-    const [useForm, setUseForm] = useState({
-        email: "",
-        password: "",
+const PartialLogin = ({ classname }: { classname: string }) => {
+  const [useForm, setUseForm] = useState({
+    email: "",
+    password: "",
+  });
+  const navigate = useNavigate();
+
+  const handleChange = (e: any) => {
+    setUseForm({ ...useForm, [e.target.name]: e.target.value });
+  };
+
+  const handleLogin = async () => {
+    try {
+      const res = await axios.post( "http://localhost:3001/users/login", useForm,
+        {
+          withCredentials: true,
+        }
+      );
+      toast.success(res.data.msg, {
+        onClose: () => navigate("/"),
       });
-        const navigated = useNavigate();
+    } catch (error: any) {
+      toast.warning(error.response?.data?.msg || "Internal server error");
+    }
+  };
 
-      const handleChange = (e:any) => {
-        setUseForm({...useForm, [e.target.name]: e.target.value})
+  const getToken = async () => {
+    try {
+      const res = await axios.get("http://localhost:3001/token", {
+        withCredentials: true,
+      });
+      console.log("dari token", res.data);
+      return res.data;
+    } catch (error: any) {
+      console.log(error.response.data);
+    }
+  };
+
+  useEffect(() => {
+    const cekToken = async () => {
+      const token = await getToken();
+      if (token) {
+        navigate("/");
       }
+    };
+    cekToken();
+  }, [navigate]);
 
-      const handleLogin = async () => {
-          try {
-          const res = await axios.post("http://localhost:3001/users/login", useForm, {
-            withCredentials : true
-          })
-          
-          console.log("dapet dari login",res);
-          
-          toast.success(res.data.msg, {
-            onClose: () => navigated("/")
-          });
-          } catch (error:any) {
-            toast.warning(error.response?.data?.msg)
-          }
-        } 
-
-
-    return (
-        <>
-        <div className={classname} >
+  return (
+    <>
+      <div className={classname}>
         <div className="flex justify-center w-full items-center">
           <div className=" w-[591px] flex flex-col gap-[41px]">
             <div className="flex flex-col gap-[68px]">
@@ -50,15 +70,39 @@ const PartialLogin = ({navigate, classname}:{navigate:() => void, classname:stri
               </div>
 
               <div className="flex flex-col gap-[23px]">
-               <Input name="email" onchange={handleChange} value={useForm.email} placeholder="email" type="email"><PiUser size={22} color="#BEBEBE"/></Input>
-               <Input name="password" onchange={handleChange} value={useForm.password} placeholder="Password" type="password"><IoKeyOutline size={22} color="#BEBEBE"/></Input>
+                <Input
+                  name="email"
+                  onchange={handleChange}
+                  value={useForm.email}
+                  placeholder="email"
+                  type="email">
+                  <PiUser size={22} color="#BEBEBE" />
+                </Input>
+                <Input
+                  name="password"
+                  onchange={handleChange}
+                  value={useForm.password}
+                  placeholder="Password"
+                  type="password">
+                  <IoKeyOutline size={22} color="#BEBEBE" />
+                </Input>
               </div>
             </div>
 
-            <button onClick={handleLogin} className="bg-[#3971FF] p-[10px] text-white rounded-xl w-full h-[68px] text-[25px] font-medium">
+            <button
+              onClick={handleLogin}
+              className="bg-gradient-to-b from-[#3971FF] to-[#184dd3] hover:bg-gradient-to-t p-[10px] text-white rounded-xl w-full h-[68px] text-[25px] font-medium cursor-pointer ">
               Login
             </button>
-          <p className="text-center">Dont have account? <span onClick={navigate} className="text-[#3971FF] cursor-pointer"> Create an account</span></p>
+            <p className="text-center">
+              Dont have account?{" "}
+              <span
+                onClick={() => navigate("/auth/register")}
+                className="text-[#3971FF] cursor-pointer">
+                {" "}
+                Create an account
+              </span>
+            </p>
           </div>
         </div>
 
@@ -69,10 +113,10 @@ const PartialLogin = ({navigate, classname}:{navigate:() => void, classname:stri
             alt=""
           />
         </div>
-<ToastContainer/>
+        <ToastContainer />
       </div>
-        </>
-    )
-}
+    </>
+  );
+};
 
-export default PartialLogin
+export default PartialLogin;

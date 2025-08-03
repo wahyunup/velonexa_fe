@@ -1,11 +1,10 @@
-import { useNavigate } from "react-router-dom"
-import RegisterPartial from "../../../components/partials/register"
+import RegisterPartial from "../../../components/partials/Register"
 
 const Register = () => {
-        const navigate = useNavigate()
+        
     return (
         <>
-        <RegisterPartial classname="flex w-full fixed justify-between" navigate={() => navigate("/auth/login")}/>
+        <RegisterPartial classname="flex w-full fixed justify-between" />
         </>
     )
 }

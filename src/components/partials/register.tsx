@@ -1,18 +1,16 @@
 import { IoKeyOutline } from "react-icons/io5";
 import { PiUser } from "react-icons/pi";
 import { TfiEmail } from "react-icons/tfi";
-import Input from "../ui/input";
-import { useState } from "react";
+import Input from "../ui/Input";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 
 const RegisterPartial = ({
-  navigate,
   classname,
 }: {
-  navigate: () => void;
   classname: string;
 }) => {
   const [useForm, setUseForm] = useState({
@@ -22,22 +20,44 @@ const RegisterPartial = ({
     confirmPassword: "",
   });
 
-  const navigated = useNavigate();
+  const navigate = useNavigate();
 
   const handleChange = (e: any) => {
     setUseForm({ ...useForm, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async () => {
+  const handleRegister = async () => {
     try {
       const res = await axios.post("http://localhost:3001/users", useForm);
       toast.success(res.data.msg, {
-        onClose : () => navigated("/auth/login")
+        onClose : () => navigate("/auth/login")
       });
     } catch (error: any) {
-      toast.warning(error.response?.data?.msg || "Terjadi kesalahan");
+      toast.warning(error.response?.data?.msg || "Internal Server Error");
     }
   };
+
+   const getToken = async () => {
+    try {
+      const res = await axios.get("http://localhost:3001/token", {
+        withCredentials: true,
+      });
+      console.log("dari token", res.data);
+      return res.data;
+    } catch (error: any) {
+      console.log(error.response.data);
+    }
+  };
+
+  useEffect(() => {
+    const cekToken = async () => {
+      const token = await getToken();
+      if (token) {
+        navigate("/");
+      }
+    };
+    cekToken();
+  }, [navigate]);
 
   return (
     <>
@@ -100,14 +120,14 @@ const RegisterPartial = ({
 
             <button
               type="submit"
-              onClick={handleSubmit}
-              className="bg-[#3971FF] p-[10px] text-white rounded-xl w-full h-[68px] text-[25px] font-medium">
+              onClick={handleRegister}
+              className="bg-gradient-to-b from-[#3971FF] to-[#184dd3] hover:bg-gradient-to-t cursor-pointer p-[10px] text-white rounded-xl w-full h-[68px] text-[25px] font-medium">
               Register
             </button>
             <p className="text-center">
               have account?{" "}
               <span
-                onClick={navigate}
+                onClick={()=>navigate("/auth/login")}
                 className="text-[#3971FF] cursor-pointer">
                 {" "}
                 Log in

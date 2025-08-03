@@ -1,12 +1,10 @@
-import PartialLogin from "../../../components/partials/login";
-import { useNavigate } from "react-router-dom";
+import PartialLogin from "../../../components/partials/Login";
 
 const Login = () => {
-    const navigate = useNavigate()
 
   return (
     <>
-     <PartialLogin  classname="flex w-full fixed justify-between" navigate={() => navigate("/auth/register")}/>
+     <PartialLogin  classname="flex w-full fixed justify-between"/>
     </>
   );
 };
