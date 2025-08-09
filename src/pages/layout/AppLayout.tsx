@@ -23,9 +23,10 @@ const AppLayout = ({
     cekToken();
   }, [navigate]);
 
+// bg-[#FCFCFC]
   return (
     <>
-      <div className={`${classname} bg-[#FCFCFC] flex`}>
+      <div className={`${classname} bg-[#FCFCFC] flex `}>
         {/* sidebar */}
         <Sidebar />
         {children}

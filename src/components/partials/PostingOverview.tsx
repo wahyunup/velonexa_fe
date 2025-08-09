@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { getToken } from "../../services/userApi";
 import { jwtDecode } from "jwt-decode";
 import type { appLayoutProps } from "../../pages/layout/type";
+import type { CommentProps } from "../ui";
 const PostingOverview = ({
   handlePostingOverview,
   user_id,
@@ -140,9 +141,10 @@ const PostingOverview = ({
                   </div>
                 ) : (
                   <div className="overflow-y-scroll h-[550px] thin-scrollbar ">
-                    {comments.map((comment) => (
+                    {comments.map((comment:CommentProps) => (
                       <>
                         <CommentList
+                          user_id={comment.user.id}
                           image={comment.user.image}
                           createdAt={comment.likes.createdAt}
                           field_comment={comment.field_comment}

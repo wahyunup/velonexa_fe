@@ -4,7 +4,7 @@ const Register = () => {
         
     return (
         <>
-        <RegisterPartial classname="flex w-full fixed justify-between" />
+        <RegisterPartial classname="flex " />
         </>
     )
 }

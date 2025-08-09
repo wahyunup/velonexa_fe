@@ -103,9 +103,16 @@ const Notification = () => {
                           username={notif.actor.username}>
                           Following you
                         </NotificationList>
-                      ) : (
-                        ""
-                      )}
+                      ) : notif.type === "comment like" ? (
+                             <NotificationList
+                          notif_id={notif.id}
+                          user_id={notif.actor.id}
+                          actorImage={notif.actor.image}
+                          imageFeed={notif.feed?.image}
+                          username={notif.actor.username}>
+                          like your comment
+                        </NotificationList>
+                      ) : ""}
                     </>
                   ))
                 ) : (

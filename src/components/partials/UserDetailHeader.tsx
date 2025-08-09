@@ -88,16 +88,17 @@ const UserDetailHeader = ({
   }
 
   return (
-    <div className="sticky top-10 bg-[#FCFCFC]">
-      <div className="flex gap-[37px]">
+    <div className="sticky top-0 bg-[#FCFCFC]">
+      <div className="flex gap-[37px] pt-20 px-10 ">
         <div className="flex flex-col items-center gap-[18px]">
+
           <div className="w-[131px] h-[131px] rounded-full overflow-hidden">
             <img className="object-cover w-full h-full" src={image} alt="" />
           </div>
           {actionButton}
         </div>
 
-        <div className="flex gap-[20px] flex-col">
+        <div className="flex gap-[20px] flex-col ">
           <div className="flex gap-[2px] flex-col">
             <h1 className="text-[24px] font-medium flex items-center gap-1">
               {displayname}
@@ -111,7 +112,7 @@ const UserDetailHeader = ({
             <span className="text-[19px]">{followingCount} following</span>
           </div>
 
-          <div className="w-[819px]">
+          <div className=" w-[500px]">
             <p className="text-[14px] text-justify">
               {!bio
                 ? `"hello velonexa im ${username} aka ${displayname} 🤠"`

@@ -5,8 +5,10 @@ import {
   createCommentLike,
   getCommentLikeStatus,
 } from "../../services/comentApi";
+import { createNotification } from "../../services/NotifApi";
 
 const CommentList = ({
+  user_id,
   username,
   field_comment,
   createdAt,
@@ -17,11 +19,18 @@ const CommentList = ({
   const [isLikeComment, setIsLikeComment] = useState(false);
 
   console.log("isLike ==>", isLikeComment);
+  console.log("username", username, user_id, field_comment);
+  
 
   const handleLikeComment = async () => {
     try {
       await createCommentLike(feedId, commentId);
       setIsLikeComment((prev) => !prev);
+      createNotification({
+        target_id : user_id,
+        type : "comment like",
+        feed_id : feedId
+      })
     } catch (error) {
       console.error("Gagal like/unlike:", error);
     }

@@ -115,7 +115,7 @@ const UserDetail = () => {
           </>
         ) : (
           <>
-            <div className="pt-20">
+            <div>
               <UserDetailHeader
                 fetchFollowing={fetchFollow}
                 getStatus={getStatus}
@@ -132,7 +132,7 @@ const UserDetail = () => {
                 followingCount={following.length}
               />
 
-              <div className="flex flex-wrap w-[1000px] gap-3 mt-[63px]">
+              <div className="grid grid-cols-3 grid-rows-3  gap-3 mt-[63px]">
                 {feed.map((f: GetFeedProps) => (
                   <div
                     key={f.id}

@@ -62,16 +62,16 @@ const RegisterPartial = ({
   return (
     <>
       <div className={classname}>
-        <div className="w-full h-screen">
+        <div className="w-[50%] h-screen overflow-hidden">
           <img
-            className="bg-cover w-full"
+            className="bg-cover w-full h-full"
             src="/src/assets/banner.jpg"
             alt=""
           />
         </div>
 
-        <div className="flex justify-center w-full items-center">
-          <div className=" w-[591px] flex flex-col gap-[41px]">
+        <div className="flex justify-center w-[50%] bg-white items-center">
+          <div className=" w-[591px]  flex flex-col gap-[41px]">
             <div className="flex flex-col gap-[68px]">
               <div className="flex flex-col gap-[11px]">
                 <h1 className="text-[37px] font-semibold">

@@ -4,7 +4,7 @@ const Login = () => {
 
   return (
     <>
-     <PartialLogin  classname="flex w-full fixed justify-between"/>
+     <PartialLogin  classname="flex"/>
     </>
   );
 };

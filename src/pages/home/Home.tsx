@@ -35,8 +35,8 @@ const Home = () => {
     <div>
       <ToastContainer />
 
-      <AppLayout classname="flex">
-        <div className="flex justify-around w-[1440px] ">
+      <AppLayout classname="flex ">
+        <div className="flex justify-around w-full ">
           <div></div>
           {/* postingan */}
           <div>

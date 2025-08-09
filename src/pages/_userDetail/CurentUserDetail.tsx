@@ -78,17 +78,15 @@ const CurentUserDetail = () => {
   return (
     <>
       <AppLayout
-        classname={`${
-          !loading ? "justify-between items-center" : "justify-between"
-        }`}>
+        classname={`${!loading ? "justify-between items-center" : ""}`}>
         {!loading ? (
           <>
             <FaSpinner size={23} className="animate-spin" />
-            <div></div>
           </>
         ) : (
           <>
-            <div className="pt-20">
+            <div className="w-full">
+              <div className="px-3">
               <UserDetailHeader
                 userId={user.id}
                 image={user.image}
@@ -100,19 +98,21 @@ const CurentUserDetail = () => {
                 followerCount={followers.length}
                 followingCount={following.length}
               />
-              <div className="flex flex-wrap w-[1000px] gap-3 mt-[63px]">
-                {feed.map((f: GetFeedProps) => (
-                  <div
-                    key={f.id}
-                    className="w-[325px] h-[325px] overflow-hidden cursor-pointer"
-                    onClick={() => handleSelectedFeed(f)}>
-                    <UserDetailFeed image={f.image} />
-                  </div>
-                ))}
+
+              
+
+                <div className="grid grid-cols-3 w-full gap-3 mt-[63px]">
+                  {feed.map((f: GetFeedProps) => (
+                    <div
+                      key={f.id}
+                      className="  aspect-square overflow-hidden cursor-pointer"
+                      onClick={() => handleSelectedFeed(f)}>
+                      <UserDetailFeed image={f.image} />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-
-            <div></div>
 
             {postingOverview && selectedFeed && (
               <PostingOverviewCurent

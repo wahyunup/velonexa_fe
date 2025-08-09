@@ -19,8 +19,8 @@ const Explore = () => {
     
   useEffect(() => {
     const fetchFeed = async () => {
-      const data = await getFeeds();
       setIsLoading(true);
+      const data = await getFeeds();
       setFeeds(data.data);
     };
     fetchFeed();
@@ -33,9 +33,8 @@ const Explore = () => {
 
   return (
     <AppLayout classname="flex">
-      <div className="flex justify-between w-[1500px] mt-10">
-        <div></div>
-        <div className="flex flex-wrap gap-5 w-[1000px]">
+      <div className="flex justify-center  w-full pt-10 px-10">
+        <div className="grid grid-cols-3 grid-rows-3 gap-3 ">
           {!isLoading ? (
             <div className="flex w-full justify-center items-center">
               <FaSpinner size={23} className="animate-spin" />
@@ -44,11 +43,11 @@ const Explore = () => {
             <>
               {feeds.map((feed: GetFeedProps) => (
                 <button
-                  className="w-[319px] h-[319px] overflow-hidden"
+                  className="max-w-[300px] max-h-[300px] cursor-pointer overflow-hidden"
                   onClick={() => handleSelectedFeed(feed)}>
                   <img
                     src={feed.image}
-                    className="object-cover h-full w-full"
+                    className="aspect-square object-cover h-full w-full"
                     alt=""
                   />
                 </button>
@@ -64,7 +63,6 @@ const Explore = () => {
             </div>
           )}
         </div>
-        <div></div>
       </div>
 
       {postingOverview && selectedFeed && (

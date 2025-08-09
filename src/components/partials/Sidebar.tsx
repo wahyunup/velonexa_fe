@@ -24,10 +24,6 @@ const Sidebar = () => {
     image: ""
   });
   const navigate = useNavigate();
-
-const isRead = notification.some((notif) => {
-    return notif.isRead
-  })
   
   
     useEffect(() => {
@@ -69,7 +65,8 @@ const isRead = notification.some((notif) => {
 
     return (
         <>
-        <div className="w-[372px] p-[15px] flex flex-col h-screen justify-between bg-white border border-r-[#ECECEC] sticky top-0">
+        {/* w-[372px] */}
+        <div className=" p-[15px] flex flex-col h-screen justify-between bg-white border border-r-[#ECECEC] sticky top-0">
         <div>
           <div className="flex flex-col items-center border-b border-b-[#f1f1f1] py-10">
  
@@ -90,7 +87,7 @@ const isRead = notification.some((notif) => {
             </span>
           </div>
 
-          <div className="flex flex-col gap-2 pt-10">
+          <div className="flex flex-col gap-2 pt-10 w-[300px]">
             <SidebarNav icon={<GoHome size={32} />} href="/">
               Home
             </SidebarNav>

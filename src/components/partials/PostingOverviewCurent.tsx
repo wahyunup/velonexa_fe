@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { FiSend } from "react-icons/fi";
 import CommentList from "../ui/CommentList";
 import { AnimatePresence, motion } from "framer-motion";
+import type { CommentProps } from "../ui";
 
 const PostingOverviewCurent = ({
   handlePostingOverview,
@@ -115,8 +116,9 @@ const PostingOverviewCurent = ({
                   </div>
                 ) : (
                   <div className="overflow-y-scroll h-[550px] thin-scrollbar ">
-                    {comments.map((comment) => (
+                    {comments.map((comment:CommentProps) => (
                       <CommentList
+                        user_id={comment.user.id}
                         image={comment.user.image}
                         commentId={comment.id}
                         feedId={feedId}

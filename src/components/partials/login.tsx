@@ -17,7 +17,8 @@ const PartialLogin = ({ classname }: { classname: string }) => {
     setUseForm({ ...useForm, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (e:React.FormEvent) => {
+    e.preventDefault()
     try {
       const res = await axios.post( "http://localhost:3001/users/login", useForm,
         {
@@ -57,8 +58,9 @@ const PartialLogin = ({ classname }: { classname: string }) => {
   return (
     <>
       <div className={classname}>
-        <div className="flex justify-center w-full items-center">
-          <div className=" w-[591px] flex flex-col gap-[41px]">
+        
+        <div className="flex justify-center bg-white h-screen w-[50%] items-center">
+          <form onSubmit={handleLogin} className=" w-[591px] flex flex-col gap-[41px] ">
             <div className="flex flex-col gap-[68px]">
               <div className="flex flex-col gap-[11px]">
                 <h1 className="text-[37px] font-semibold">
@@ -90,7 +92,7 @@ const PartialLogin = ({ classname }: { classname: string }) => {
             </div>
 
             <button
-              onClick={handleLogin}
+              type="submit"
               className="bg-gradient-to-b from-[#3971FF] to-[#184dd3] hover:bg-gradient-to-t p-[10px] text-white rounded-xl w-full h-[68px] text-[25px] font-medium cursor-pointer ">
               Login
             </button>
@@ -103,12 +105,12 @@ const PartialLogin = ({ classname }: { classname: string }) => {
                 Create an account
               </span>
             </p>
-          </div>
+          </form>
         </div>
 
-        <div className="w-full h-screen">
+        <div className="w-[50%] h-screen overflow-hidden">
           <img
-            className="bg-cover w-full"
+            className="bg-cover w-full h-full"
             src="/src/assets/banner.jpg"
             alt=""
           />
