@@ -49,7 +49,7 @@ const Notification = () => {
     <>
       <div className="flex justify-end relative mt-10 mb-10 top-10">
         <div
-          className="bg-[#dde7ff] hover:bg-[#cddcfd] p-2 rounded-full relative cursor-pointer"
+          className="bg-[#dde7ff] hover:bg-[#cddcfd] border-[#d0deff] border p-2 rounded-full relative cursor-pointer"
           onMouseEnter={() => setIsOpen(true)}
           onClick={() => setIsOpen(true)}
           onMouseLeave={() => setIsOpen(false)}>
@@ -117,8 +117,8 @@ const Notification = () => {
                   ))
                 ) : (
                   <>
-                    <span className="text-gray-800 text-center">
-                      belum ada notifikasi
+                    <span className="text-gray-800 text-center text-md">
+                     No notifications yet <br/> go explore and make something happen!
                     </span>
                   </>
                 )}

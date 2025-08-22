@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
+@theme {
+  --breakpoint-12inch : 1279
+}
+
 
 .thin-scrollbar::-webkit-scrollbar {
   width: 2px;
+}
+
+.stable-scrollbar {
+  scrollbar-gutter: stable;
 }
 
 .thin-scrollbar::-webkit-scrollbar-track {

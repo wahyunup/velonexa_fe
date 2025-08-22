@@ -9,6 +9,10 @@ import { FaArrowDownLong, FaSpinner } from "react-icons/fa6";
 import { FaArrowUpLong } from "react-icons/fa6";
 import { PiCoffeeDuotone } from "react-icons/pi";
 import PostingOverview from "./PostingOverview";
+import FeedSkeleton from "../../skeleton/Feed/FeedSkeleton";
+import { getBookmark } from "../../services/bookmarkApi";
+import { getToken } from "../../services/userApi";
+import { jwtDecode } from "jwt-decode";
 
 const Feed = () => {
   const [feed, setFeed] = useState<GetFeedProps[]>([]);
@@ -16,8 +20,6 @@ const Feed = () => {
   const [page, setPage] = useState(1);
   const [postingOverview, setPostingOverview] = useState(false);
   const [selectedFeed, setSelectedFeed] = useState<GetFeedProps | null>(null);
-
-  console.log("SELECTED FEEED", feed);
 
   const getFeed = async () => {
     try {
@@ -59,6 +61,10 @@ const Feed = () => {
     }
   };
 
+  const handlingReport = (feedId:number) => {
+    setFeed((prev) => prev.filter(feed => feed.id !== feedId))
+  }
+
   return (
     <>
       {page > 1 && (
@@ -71,15 +77,19 @@ const Feed = () => {
         </div>
       )}
       {isLoading ? (
-        <div className="flex justify-center items-center h-svh mt-7">
-          <FaSpinner size={23} className="animate-spin" />
-        </div>
+        Array.from({length:2}).map(() => (
+            <div className="flex flex-col">
+            <FeedSkeleton/>
+            </div>
+          ))
       ) : (
         <div className="flex flex-col gap-20 mt-24 w-[500px]">
           {feed.map((data) => {
             return (
               <div className="flex flex-col gap-[15px]" key={data.id}>
                 <Feedheader
+                  handlingReport={handlingReport}
+                  feed_id={data.id}
                   id={data.user_id}
                   image={data.user.image}
                   username={data.user.username}
@@ -104,6 +114,7 @@ const Feed = () => {
                   username={data.user.username}
                 />
                 <FeedComment
+                  user_id={data.user_id}
                   feedId={data.id}
                   handlePostingOverview={() => handlePostingOverview(data)}
                 />
@@ -122,7 +133,7 @@ const Feed = () => {
         </div>
       )}
 
-      {feed.length === 0 && (
+      {!isLoading && feed.length === 0 && (
         <div className="flex flex-col items-center gap-3 justify-center">
           <PiCoffeeDuotone size={80} color="#3971FF" />
           <span className="text-[15px] text-[#3971FF]">
@@ -133,6 +144,7 @@ const Feed = () => {
 
       {postingOverview && selectedFeed && (
         <PostingOverview
+          handlingReport={handlingReport}
           profileImage={selectedFeed.user.image}
           feedId={selectedFeed.id}
           getFeed={getFeed}
@@ -142,7 +154,7 @@ const Feed = () => {
           createdAt={selectedFeed.createdAt}
           description={selectedFeed.description}
           image={selectedFeed.image}
-          user_id={selectedFeed.id}
+          user_id={selectedFeed.user_id}
           username={selectedFeed.user.username}
         />
       )}

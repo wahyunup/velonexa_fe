@@ -19,6 +19,8 @@ export interface FeedheaderProps {
   address: string;
   image: string;
   id: number;
+  feed_id : number
+  handlingReport : (feed_id:number) => void
 }
 
 export interface user {
@@ -69,10 +71,10 @@ export interface UserDetailHeaderProps {
   followerCount: ReactNode;
   email: string;
   image: string;
-  isFollow: any?;
-  setIsFollow: any?;
-  getStatus: any?;
-  fetchFollowing: () => Promise<void>?;
+  isFollow?: any;
+  setIsFollow?: any;
+  getStatus?: any;
+  fetchFollowing?: () => Promise<void>;
 }
 
 export interface CommentListProps {

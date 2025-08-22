@@ -82,8 +82,8 @@ const Profile = () => {
     <>
       <ToastContainer />
       <SettingsLayout>
-        <div className="flex-col flex  gap-[28px]">
-          <div className="flex justify-between items-center w-[734px] bg-[#F8F8F8] outline-1 outline-[#EFEFEF] h-[189px] rounded-4xl px-[50px]">
+        <div className="flex-col flex  gap-[28px] w-full">
+          <div className="flex justify-between items-center w-full bg-[#F8F8F8] outline-1 outline-[#EFEFEF] h-[189px] rounded-4xl px-[50px]">
             <div className="w-[111px] h-[111px] overflow-hidden rounded-full outline-3 outline-[#5484FF]">
               <img className="object-cover w-full h-full" src={dataUser.image} alt="" />
             </div>
@@ -96,7 +96,7 @@ const Profile = () => {
 
           <form
             onSubmit={handleEdit}
-            className="w-[734px] px-[41px] py-[37px] bg-[#F8F8F8] outline-1 outline-[#EFEFEF] rounded-4xl">
+            className="w-full px-[41px] py-[37px] bg-[#F8F8F8] outline-1 outline-[#EFEFEF] rounded-4xl">
             <div className="flex flex-col gap-[33px]">
               <div>
                 <h1 className="text-[19px] font-medium">Profile</h1>

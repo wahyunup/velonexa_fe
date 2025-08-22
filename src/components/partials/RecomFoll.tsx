@@ -1,11 +1,25 @@
 import RecomUser from "../ui/RecomUser";
-import { getAllUser } from "../../services/userApi";
+import { getAllUser, getToken } from "../../services/userApi";
 import { useEffect, useState } from "react";
-import { FaSpinner } from "react-icons/fa6";
+import RecomendationSkeleton from "../../skeleton/Recommendation/RecommendationSkeleton";
+import { jwtDecode } from "jwt-decode";
 
 const RecomFoll = () => {
   const [users, setUsers] = useState([]);
+  const [currentUser_id, setCurrentUser_id] = useState(0)
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      const res = await getToken()
+      const decode = jwtDecode(res)
+      setCurrentUser_id(decode.id)
+    }
+    fetchToken()
+  },[])
+
+  const usersFillter = users.filter((user:{id:number}) => user.id !== currentUser_id)
+  
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -26,14 +40,23 @@ const RecomFoll = () => {
       <div
         className={`flex ${
           !loading
-            ? "justify-center items-center h-[200px]"
-            : " flex-col gap-[24px]"
+            ? "justify-center items-center px-1"
+            : " flex-col gap-[24px] h-[240px] overflow-hidden hover:overflow-y-scroll thin-scrollbar stable-scrollbar px-1 duration-200 transition-all"
         }`}>
         {!loading ? (
-          <FaSpinner size={23} className="animate-spin" />
+          // <FaSpinner size={23} className="animate-spin" />
+          <div className="flex flex-col gap-[24px]">
+{
+          Array.from({length: 4}).map(() => (
+
+            <RecomendationSkeleton/>
+          ))}
+          </div>
+
+          
         ) : (
           <>
-            {users.map((user: any) => (
+            {usersFillter.map((user: any) => (
               <RecomUser
                 id={user.id}
                 image={user.image}

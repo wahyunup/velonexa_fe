@@ -7,19 +7,27 @@ import {
 } from "../../services/ChatApi";
 import type { ChatProps, userChatListProps, UserProps } from "../type";
 import UserChatList from "../../components/partials/UserChatList";
-import { getToken } from "../../services/userApi";
+import { getAllUser, getToken } from "../../services/userApi";
 import { jwtDecode } from "jwt-decode";
-import { LuSend } from "react-icons/lu";
 import InputChat from "../../components/partials/InputChat";
 import BodyChat from "../../components/partials/BodyChat";
+import ChatListSkeleton from "../../skeleton/ChatList/ChatListSkeleton";
+import NewChatModal from "../../components/modal/NewChat";
+import ListUser from "../../components/partials/ListUser";
 
 const Message = () => {
   const [userChatList, setUserChatList] = useState([]);
-  const [selectedChat, setSelectedChat] = useState<userChatListProps | null>(null);
+  const [selectedChat, setSelectedChat] = useState<userChatListProps | null>(
+    null
+  );
 
   const [bodyChat, setBodyChat] = useState([]);
   const [user, setUser] = useState<UserProps | undefined>();
   const [chatValue, setChatValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenUserList, setIsOpenUserList] = useState(false);
+  const [allUser, setAllUser] = useState([]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -28,6 +36,15 @@ const Message = () => {
       setUser(decode);
     };
     fetchUser();
+  }, []);
+
+  useEffect(() => {
+    const fetchAllUser = async () => {
+      const res = await getAllUser();
+
+      setAllUser(res);
+    };
+    fetchAllUser();
   }, []);
 
   useEffect(() => {
@@ -41,9 +58,11 @@ const Message = () => {
   }, [selectedChat]);
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchChats = async () => {
       const res = await getChat();
       setUserChatList(res.users);
+      setIsLoading(false);
     };
     fetchChats();
   }, []);
@@ -53,38 +72,60 @@ const Message = () => {
     setChatValue("");
   };
 
-  const handleSendChat = async (e:React.FormEvent<HTMLButtonElement>) => {
+  const handleSendChat = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setChatValue("");
-
-    if(!selectedChat) return
+    if (!selectedChat) return;
 
     const res = await createNewChat(chatValue, selectedChat.id);
-    return res
+    setChatValue("");
+
+    return res;
+  };
+
+  const handleTrue = (user: any) => {
+    setIsOpen(true);
   };
 
   return (
     <AppLayout classname="flex">
       <div className="flex w-full bg-red-200">
-        <div className="bg-white p-10 flex flex-col gap-[29px] border-r-1 border-[#F4F4F4]">
+        <div className="bg-white p-10 flex flex-col gap-[29px] border-r-1 border-[#F4F4F4] w-[50%]">
           <p className="text-[27px] font-medium ">Message</p>
-          <div className="flex flex-col gap-[7px] overflow-y-scroll thin-scrollbar h-[790px] ">
-            {userChatList.map((chatList: userChatListProps) => (
-              <UserChatList
-                id={chatList.id}
-                onclick={() => handleShowDetailChat(chatList)}
-                image={chatList.image}
-                lastMessage={chatList.lastMessage}
-                username={chatList.username}
-              />
-            ))}
+          <div className="flex flex-col gap-[7px] overflow-y-scroll thin-scrollbar h-[790px]">
+            {isLoading ? (
+              Array.from({ length: 5 }).map(() => <ChatListSkeleton />)
+            ) : userChatList.length > 0 ? (
+              userChatList.map((chatList: userChatListProps) => (
+                <UserChatList
+                  id={chatList.id}
+                  onclick={() => handleShowDetailChat(chatList)}
+                  image={chatList.image}
+                  lastMessage={chatList.lastMessage}
+                  username={chatList.username}
+                />
+              ))
+            ) : (
+              <>
+                <div className=" h-full flex justify-center items-center flex-col gap-5">
+                  <h1>Ready to chat?</h1>
+                  <button
+                    onClick={() => setIsOpenUserList(true)}
+                    className="bg-[#3971FF] text-white py-2 px-4 rounded-lg cursor-pointer">
+                    New Conversation
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
 
         <div className="bg-white w-full ">
           {selectedChat === null ? (
             <div className="flex h-full justify-center items-center">
-              <p>Mulai chat dengan someone</p>
+              <p>
+                Pick someone from the list on the left and start the
+                conversation.
+              </p>
             </div>
           ) : (
             <>
@@ -104,23 +145,26 @@ const Message = () => {
               </div>
 
               {/* body chat */}
-             <BodyChat
-             bodyChat={bodyChat}
-             user={user}
-             />
+              <BodyChat bodyChat={bodyChat} user={user} />
 
               {/* input chat */}
               <InputChat
-              handleSendChat={handleSendChat}
-              chatValue={chatValue}
-              setChatValue={setChatValue}
-              user={user}
+                handleSendChat={handleSendChat}
+                chatValue={chatValue}
+                setChatValue={setChatValue}
+                user={user}
               />
-             
             </>
           )}
         </div>
       </div>
+
+      {isOpenUserList && (
+        <ListUser
+          handleFalse={() => setIsOpenUserList(false)}
+          allUser={allUser}
+        />
+      )}
     </AppLayout>
   );
 };

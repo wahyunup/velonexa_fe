@@ -20,4 +20,13 @@ export const getFeeds = async () => {
     throw error    
   }
 }
+
+export const deleteFeed = async (feed_id:number) => {
+  try {
+    const res = await axios.delete(`http://localhost:3001/feed/${feed_id}`)
+    return res.data
+  } catch (error) {
+    throw error    
+  }
+}
  

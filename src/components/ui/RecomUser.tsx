@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { MdVerified } from "react-icons/md";
 import { Follow, getFollowers } from "../../services/followApi";
-import { getUserDetail } from "../../services/userApi";
+import { getToken, getUserDetail } from "../../services/userApi";
 import { createNotification } from "../../services/NotifApi";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const RecomUser = ({
   id,
@@ -18,7 +19,7 @@ const RecomUser = ({
 }) => {
   const [isFollow, setIsFollow] = useState(false);
   const [currentUser_id, setCurrentUser_id] = useState(0);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -30,7 +31,6 @@ const RecomUser = ({
 
   const getStatus = async () => {
     const res = await getFollowers(id);
-    console.log("get followers", res);
     const status = Array.isArray(res.followingMaping)
       ? res.followingMaping.some(
           (item: any) =>
@@ -45,31 +45,33 @@ const RecomUser = ({
   }, [id, currentUser_id]);
 
   const handleFollow = async () => {
-    const res = await Follow(id)
-        setIsFollow(res.follow.isFollow)
-        createNotification({
-          target_id : id,
-          type : "follow",
-          feed_id : null
-        })
+    const res = await Follow(id);
+    setIsFollow(res.follow.isFollow);
+    createNotification({
+      target_id: id,
+      type: "follow",
+      feed_id: null,
+    });
   };
 
   return (
     <>
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-3">
         <div className="flex gap-[13px]">
           <a
             href={`/userdetail/${id}`}
             className="h-[37px] w-[37px] rounded-full overflow-hidden">
             <img className="object-cover w-full h-full" src={image} alt="" />
           </a>
-          <div className="flex flex-col">
-            <a
-              href={`/userdetail/${id}`}
-              className="text-[13px] font-medium flex items-center gap-1">
-              {displayname}
+          <div className="flex flex-col ">
+            <div className="flex items-center gap-1">
+              <a
+                href={`/userdetail/${id}`}
+                className="text-[13px] font-medium">
+                {displayname}
+              </a>
               <MdVerified className=" right-0 bottom-10" color="#3971FF" />
-            </a>
+            </div>
             <a href={`/userdetail/${id}`} className="text-[11px] font-normal">
               @{username}
             </a>
@@ -79,13 +81,13 @@ const RecomUser = ({
           isFollow ? (
             <button
               onClick={() => navigate(`/userdetail/${id}`)}
-              className="cursor-pointer font-normal text-[12px] px-[16px] py-[5px] text-[#3971FF] rounded-full">
+              className="cursor-pointer font-normal text-[12px] px-[16px] py-[5px] text-[#3971FF] rounded-full bg-[#dde7ff] border-[#d0deff] hover:border-[#3971FF] border transition-all duration-300">
               see post
             </button>
           ) : (
             <button
               onClick={handleFollow}
-              className="font-normal text-[12px] px-[16px] py-[5px] bg-[#3971FF] text-white rounded-full">
+              className="cursor-pointer font-normal text-[12px] px-[16px] py-[5px] bg-[#3971FF] text-white rounded-full">
               Follow
             </button>
           )

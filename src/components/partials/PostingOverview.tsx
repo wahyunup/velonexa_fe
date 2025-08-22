@@ -22,6 +22,7 @@ const PostingOverview = ({
   feedId,
   getFeed,
   profileImage,
+  handlingReport
 }: {
   handlePostingOverview: () => void;
   user_id: number;
@@ -34,6 +35,7 @@ const PostingOverview = ({
   like_count: number;
   feedId: number;
   getFeed: () => void;
+  handlingReport: (feed_id:number) => void
 }) => {
   const [comments, setComments] = useState([]);
   const [user, setUser] = useState({
@@ -43,7 +45,8 @@ const PostingOverview = ({
     content: "",
   });
 
-  console.log("get user", user.image);
+  const [isOpen, setIsOpen] = useState(false);
+
   useEffect(() => {
     const fetchUser = async () => {
       const res = await getToken();
@@ -102,8 +105,10 @@ const PostingOverview = ({
             transition={{ duration: 0.2 }}
             exit={{ opacity: 0, scale: 0.9 }}
             className="bg-white px-[31px] py-[41px] w-[1120.5px] z-20 rounded-2xl flex gap-[24px]">
-            <div className="flex flex-col gap-[15px]">
+            <div className="flex flex-col gap-[15px] ">
               <Feedheader
+                handlingReport={handlingReport}
+                feed_id={feedId}
                 image={profileImage}
                 id={user_id}
                 username={username}
@@ -111,9 +116,22 @@ const PostingOverview = ({
                 address={address}
               />
 
-              <div className="w-[603px] h-[603px] rounded-2xl overflow-hidden">
+              <div
+                onClick={() => setIsOpen(true)}
+                className="w-[603px] h-[603px] rounded-2xl overflow-hidden cursor-zoom-in">
                 <img className="object-cover h-full w-full" src={image} />
               </div>
+
+              {isOpen && (
+                <div
+                  className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 cursor-zoom-out"
+                  onClick={() => setIsOpen(false)}>
+                  <img
+                    src={image}
+                    className="max-w-[90%] max-h-[90%] rounded-md shadow-lg"
+                  />
+                </div>
+              )}
 
               <InteracFeed
                 isOpen={false}
@@ -141,7 +159,7 @@ const PostingOverview = ({
                   </div>
                 ) : (
                   <div className="overflow-y-scroll h-[550px] thin-scrollbar ">
-                    {comments.map((comment:CommentProps) => (
+                    {comments.map((comment: CommentProps) => (
                       <>
                         <CommentList
                           user_id={comment.user.id}
@@ -171,7 +189,7 @@ const PostingOverview = ({
                   </div>
 
                   <input
-                    className="py-[11px] outline-none w-[280px]"
+                    className="py-[11px] outline-none"
                     type="text"
                     name="comment"
                     placeholder="comment ..."

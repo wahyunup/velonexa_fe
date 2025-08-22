@@ -14,6 +14,13 @@ import {
   getFollowersUser,
   getFollows,
 } from "../../services/followApi";
+import UserDetailSkeleton from "../../skeleton/CurrentUserDetails/UserDetailSkeleton";
+import NewChatModal from "../../components/modal/NewChat";
+import { getBookmark } from "../../services/bookmarkApi";
+import { BsBookmarkCheck, BsBookmarkCheckFill } from "react-icons/bs";
+import { IoImage, IoImageOutline } from "react-icons/io5";
+import { IoLockClosedOutline } from "react-icons/io5";
+import { GoBookmarkSlash } from "react-icons/go";
 
 const UserDetail = () => {
   const [user, setUser] = useState({
@@ -24,10 +31,12 @@ const UserDetail = () => {
     email: "",
     image: "",
   });
+  const [userLogin, setUserLogin] = useState();
 
   // console.log("user ===>", user);
 
   const [feed, setFeed] = useState([]);
+  const [bookmark, setBookmark] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -35,9 +44,19 @@ const UserDetail = () => {
   const [postingOverview, setPostingOverview] = useState(false);
   const [isFollow, setIsFollow] = useState(false);
   const [currentUser_id, setCurrentUser_id] = useState(0);
+  const [isActive, setIsActive] = useState("post");
 
   const { id } = useParams();
   const userId = Number(id);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await getToken();
+      const decode = jwtDecode(res);
+      setUserLogin(decode);
+    };
+    fetchUser();
+  });
 
   useEffect(() => {
     const fetchUserDetail = async () => {
@@ -68,7 +87,7 @@ const UserDetail = () => {
 
   useEffect(() => {
     fetchFollow();
-    fetchFollowers()
+    fetchFollowers();
   }, [userId]);
 
   useEffect(() => {
@@ -77,7 +96,7 @@ const UserDetail = () => {
       setCurrentUser_id(res.user.id);
     };
     fetchCurrentUser();
-  },[]);
+  }, []);
 
   const getStatus = async () => {
     const res = await getFollowers(userId);
@@ -102,52 +121,137 @@ const UserDetail = () => {
     setPostingOverview(!postingOverview);
   };
 
+  useEffect(() => {
+    const fetchBookmark = async () => {
+      const res = await getBookmark(user.id);
+      console.log("bookmark", res.bookmark);
+      setBookmark(res.bookmark);
+    };
+    fetchBookmark();
+  }, [user.id]);
+
   return (
     <>
       <AppLayout
-        classname={`${
-          !loading ? "justify-between items-center" : "justify-between"
-        }`}>
+        classname={`${!loading ? "justify-between items-center" : ""}`}>
         {!loading ? (
           <>
-            <FaSpinner size={23} className="animate-spin" />
-            <div></div>
+            {/* <FaSpinner size={23} className="animate-spin" /> */}
+            <UserDetailSkeleton />
           </>
         ) : (
           <>
-            <div>
-              <UserDetailHeader
-                fetchFollowing={fetchFollow}
-                getStatus={getStatus}
-                isFollow={isFollow}
-                setIsFollow={setIsFollow}
-                userId={user.id}
-                image={user.image}
-                email={user.email}
-                bio={user.bio}
-                displayname={user.displayname}
-                postCount={feed.length}
-                username={user.username}
-                followerCount={followers.length}
-                followingCount={following.length}
-              />
-
-              <div className="grid grid-cols-3 grid-rows-3  gap-3 mt-[63px]">
-                {feed.map((f: GetFeedProps) => (
-                  <div
-                    key={f.id}
-                    className="w-[325px] h-[325px] overflow-hidden cursor-pointer"
-                    onClick={() => handleSelectedFeed(f)}>
-                    <UserDetailFeed image={f.image} />
-                  </div>
-                ))}
+            <div className=" w-full flex justify-center">
+              <div className="2xl:w-[1000px] px-10">
+                <UserDetailHeader
+                  fetchFollowing={fetchFollow}
+                  getStatus={getStatus}
+                  isFollow={isFollow}
+                  setIsFollow={setIsFollow}
+                  userId={user.id}
+                  image={user.image}
+                  email={user.email}
+                  bio={user.bio}
+                  displayname={user.displayname}
+                  postCount={feed.length}
+                  username={user.username}
+                  followerCount={followers.length}
+                  followingCount={following.length}
+                />
+                <div className="flex p-[10px] justify-center gap-10 mt-[12px]">
+                  <button
+                    onClick={() => setIsActive("post")}
+                    className={`cursor-pointer flex gap-2 items-center ${
+                      isActive === "post" ? "text-[#3971FF]" : "text-gray-400"
+                    } `}>
+                    {isActive === "post" ? (
+                      <IoImage size={25} />
+                    ) : (
+                      <IoImageOutline size={25} />
+                    )}
+                    <span className="text-lg font-medium">Post</span>
+                  </button>
+                  <button
+                    onClick={() => setIsActive("saved")}
+                    className={`cursor-pointer flex gap-2 items-center ${
+                      isActive === "saved" ? "text-[#3971FF]" : "text-gray-400"
+                    } `}>
+                    {isActive === "saved" ? (
+                      <BsBookmarkCheckFill size={25} />
+                    ) : (
+                      <BsBookmarkCheck size={25} />
+                    )}
+                    <span className="text-lg">Saved</span>
+                  </button>
+                </div>
+                <div className="grid grid-cols-3 gap-3 mt-[63px]">
+                  {isActive === "post" ? (
+                    <>
+                      {feed.map((f: GetFeedProps) => (
+                        <div
+                          key={f.id}
+                          className=" aspect-square overflow-hidden cursor-pointer"
+                          onClick={() => handleSelectedFeed(f)}>
+                          <UserDetailFeed image={f.image} />
+                        </div>
+                      ))}
+                    </>
+                  ) : isActive === "saved" ? (
+                    <>
+                      {bookmark.length > 0 ? (
+                        user.id === userLogin?.id ? (
+                          bookmark.map((b: GetFeedProps) => (
+                            <div
+                              key={b.id}
+                              className=" aspect-square overflow-hidden cursor-pointer"
+                              onClick={() => handleSelectedFeed(b.feed)}>
+                              <UserDetailFeed image={b.feed.image} />
+                            </div>
+                          ))
+                        ) : (
+                          <>
+                            <div></div>
+                            <div className="flex flex-col items-center gap-5 h-[500px]">
+                              <IoLockClosedOutline size={40} />
+                              <h1 className="text-[21px] font-medium text-center ">
+                                This user's feed bookmark are private
+                              </h1>
+                              <p className=" text-center text-[16px]">
+                                Feed bookmark by{" "}
+                                <span className="text-[#3971FF]">
+                                  {user.username}
+                                </span>{" "}
+                                are currently hidden
+                              </p>
+                            </div>
+                            <div></div>
+                          </>
+                        )
+                      ) : (
+                        <>
+                          <div></div>
+                          <div className="flex flex-col items-center gap-5">
+                            <GoBookmarkSlash size={40}/>
+                            <h1 className="text-[21px] font-medium text-center ">No Saved Posts Yet</h1>
+                            <p className=" text-center text-[16px]">
+                            Save posts to easily find them again later.
+                            </p>
+                          </div>
+                          <div></div>
+                        </>
+                      )}
+                    </>
+                  ) : null}
+                </div>
               </div>
             </div>
-            <div></div>
 
             {postingOverview && selectedFeed && (
               <PostingOverview
-                profileImage={user.image}
+                handlingReport={() => selectedFeed.id}
+                profileImage={
+                  isActive === "saved" ? selectedFeed?.user?.image : user.image
+                }
                 getFeed={getFeeds}
                 address={selectedFeed.address}
                 createdAt={selectedFeed.createdAt}
@@ -157,7 +261,11 @@ const UserDetail = () => {
                 image={selectedFeed.image}
                 like_count={selectedFeed.like_count}
                 user_id={selectedFeed.user_id}
-                username={user.username}
+                username={
+                  isActive === "saved"
+                    ? selectedFeed?.user?.username
+                    : user.username
+                }
               />
             )}
           </>

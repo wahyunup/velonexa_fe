@@ -7,6 +7,7 @@ import type { GetFeedProps } from "../../components/ui";
 import { PiCoffeeDuotone } from "react-icons/pi";
 import { Navigate, useNavigate } from "react-router-dom";
 import { getToken } from "../../services/userApi";
+import ExplorerSkeleton from "../../skeleton/Explorer/ExplorerSkeleton";
 
 const Explore = () => {
   const [feeds, setFeeds] = useState<GetFeedProps[]>([]);
@@ -22,6 +23,7 @@ const Explore = () => {
       setIsLoading(true);
       const data = await getFeeds();
       setFeeds(data.data);
+      setIsLoading(false)
     };
     fetchFeed();
   }, []);
@@ -31,42 +33,55 @@ const Explore = () => {
     setPostingOverview(true);
   };
 
+   const handlingReport = (feedId:number) => {
+    setFeeds((prev) => prev.filter(feed => feed.id !== feedId))
+  }
+
   return (
-    <AppLayout classname="flex">
-      <div className="flex justify-center  w-full pt-10 px-10">
-        <div className="grid grid-cols-3 grid-rows-3 gap-3 ">
-          {!isLoading ? (
-            <div className="flex w-full justify-center items-center">
-              <FaSpinner size={23} className="animate-spin" />
-            </div>
+    <AppLayout classname="">
+      <div className="flex justify-center w-full pt-10 ">
+        <div className="">
+        <div className="grid grid-cols-3 gap-3 px-10">
+          {isLoading ? (
+            
+              Array.from({length: 9}).map(() => (
+
+                <ExplorerSkeleton/>
+              ))
           ) : feeds.length > 0 ? (
             <>
               {feeds.map((feed: GetFeedProps) => (
-                <button
-                  className="max-w-[300px] max-h-[300px] cursor-pointer overflow-hidden"
+                <div
+                  className="w-[268px] h-[268px] cursor-pointer overflow-hidden"
                   onClick={() => handleSelectedFeed(feed)}>
                   <img
                     src={feed.image}
                     className="aspect-square object-cover h-full w-full"
                     alt=""
                   />
-                </button>
+                </div>
               ))}
             </>
           ) : (
-            <div className="flex justify-center items-center w-full flex-col gap-5">
+            <div className="w-[70vw] h-[100vh]  ">
+
+            <div className="flex items-center justify-center flex-col gap-5 ">
               <PiCoffeeDuotone size={80} color="#3971FF" />
               <span className="text-center text-[16px] font-medium text-[#3971FF]">
                 Looks like there's nothing to see here yet. <br /> Let's start
                 uploading something!
               </span>
             </div>
+            </div>
+         
           )}
+        </div>
         </div>
       </div>
 
       {postingOverview && selectedFeed && (
         <PostingOverview
+        handlingReport={handlingReport}
          profileImage={selectedFeed.user.image}
           address={selectedFeed?.address}
           createdAt={selectedFeed?.createdAt}

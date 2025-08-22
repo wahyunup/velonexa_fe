@@ -26,7 +26,6 @@ const Home = () => {
       const token = await getToken();
       const decode = jwtDecode(token) as appLayoutProps;
       setData({ username: decode.username, profileImage: decode.image });
-      console.log("dapet dari decode di home ===>", decode);
     };
 
     fetchUser();
@@ -36,7 +35,7 @@ const Home = () => {
       <ToastContainer />
 
       <AppLayout classname="flex ">
-        <div className="flex justify-around w-full ">
+        <div className="flex justify-around w-full">
           <div></div>
           {/* postingan */}
           <div>

@@ -4,7 +4,7 @@ import AppLayout from "./AppLayout";
 const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <AppLayout classname="">
-      <div className="flex ml-[25px] mt-[80px] gap-[25px] justify-between">
+      <div className="flex ml-[25px] mt-[80px] gap-[25px] justify-between w-full mr-[25px]">
         <SidebarSetting />
         {children}
       </div>

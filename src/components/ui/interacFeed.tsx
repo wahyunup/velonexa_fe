@@ -7,6 +7,9 @@ import { IoBookmark } from "react-icons/io5";
 import type { InteracFeedProps } from "../ui";
 import axios from "axios";
 import { createNotification } from "../../services/NotifApi";
+import { createBookmark, getBookmark } from "../../services/bookmarkApi";
+import { getToken } from "../../services/userApi";
+import { jwtDecode } from "jwt-decode";
 
 const InteracFeed = ({
   likeCount,
@@ -17,21 +20,43 @@ const InteracFeed = ({
 }: InteracFeedProps) => {
   const [likeStatus, setLikeStatus] = useState(false);
   const [isLike, setIsLike] = useState();
-  const [isSave, setIsSave] = useState(false);
+  const [isBookmark, setIsBookmark] = useState(false);
+  const [userLogin, setUserLogin] = useState()
 
-  const getLikeStatus = async () => {
-    try {
-      const res = await axios.get(
-        `http://localhost:3001/feed/likes/${feedId}`,
-        {
-          withCredentials: true,
-        }
-      );
-      console.log("dapet dari status like ===>", res.data.data.isLike);
-      setLikeStatus(res.data.data.isLike);
-      setIsLike(res.data.data.isLike);
-    } catch (error) {}
-  };
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await getToken()
+      const decode = jwtDecode(res)
+      setUserLogin(decode)      
+    }
+    fetchUser()
+  },[])
+  
+
+  useEffect(() => {
+    const getBookmarkStatus = async () => {
+      const res = await getBookmark(user_id);
+      const saved = res.bookmark.some((b) => b.isSaved && b.feed_id === feed.id && b.actor_id === userLogin?.id);
+      setIsBookmark(saved);
+    };
+    getBookmarkStatus();
+  }, [feedId, user_id]);
+
+  useEffect(() => {
+    const getLikeStatus = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:3001/feed/likes/${feedId}`,
+          {
+            withCredentials: true,
+          }
+        );
+        setLikeStatus(res.data.data.isLike);
+        setIsLike(res.data.data.isLike);
+      } catch (error) {}
+    };
+    getLikeStatus();
+  }, [feedId]);
 
   const fetchLike = async () => {
     try {
@@ -40,7 +65,6 @@ const InteracFeed = ({
         { like: !isLike },
         { withCredentials: true }
       );
-      console.log("data dari backend ===>", res.data.msg);
       setIsLike(res.data.isLike);
       setLikeStatus(res.data.isLike);
       refreshFeed();
@@ -54,15 +78,20 @@ const InteracFeed = ({
     }
   };
 
-  console.log("user iddddddd ====>",user_id);
-  
+  const handleIsSave = async () => {
+    const res = await createBookmark(feedId);
+    setIsBookmark(res.isSaved);
+  };
+
+  const handleUnSave = async () => {
+    const res = await createBookmark(feedId);
+    setIsBookmark(res.isSaved);
+  };
 
   useEffect(() => {
-    getLikeStatus();
     refreshFeed();
   }, [feedId]);
 
-  const handleIsSave = () => setIsSave(!isSave);
   return (
     <div className="flex flex-col gap-[9px]">
       <div className="flex justify-between items-center">
@@ -76,11 +105,11 @@ const InteracFeed = ({
           </button>
           <BsShare size={25} />
         </div>
-        <button onClick={handleIsSave} className="cursor-pointer">
-          {isSave ? (
-            <IoBookmark size={34} color="orange" />
+        <button className="cursor-pointer">
+          {isBookmark ? (
+            <IoBookmark onClick={handleUnSave} size={34} color="orange" />
           ) : (
-            <IoBookmarkOutline size={34} />
+            <IoBookmarkOutline onClick={handleIsSave} size={34} />
           )}
         </button>
       </div>

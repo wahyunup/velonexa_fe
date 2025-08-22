@@ -15,24 +15,19 @@ import { getToken } from "../../services/userApi";
 import type { appLayoutProps } from "../../pages/layout/type";
 import { MdVerified } from "react-icons/md";
 import { getNotif } from "../../services/NotifApi";
+import ConfirmationModal from "../modal/Confirmation";
 
 const Sidebar = () => {
-  const [notification, setNotification] = useState([]);
     const [data, setData] = useState({
     displayname: "",
     username: "",
     image: ""
   });
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false)
   
   
-    useEffect(() => {
-      const fetchNotif = async () => {
-        const res = await getNotif();
-        setNotification(res);
-      };
-      fetchNotif();
-    }, []);
+ 
 
   const logOut = async () => {
     try {
@@ -43,6 +38,7 @@ const Sidebar = () => {
           withCredentials: true,
         }
       );
+      setIsOpen(false)
       console.log(res.data.msg);
       return toast.success(res.data?.msg, {
         onClose: () => navigate("/auth/login"),
@@ -52,12 +48,15 @@ const Sidebar = () => {
     }
   };
 
+  const handleOpenModal = () => {
+    setIsOpen(true)
+  }
+
   useEffect(() => {
     const fetchUser = async () => {
       const token = await getToken();
       const decode = jwtDecode(token) as appLayoutProps;
       setData({ displayname: decode.displayname, username: decode.username,image:decode.image });
-      console.log("dapet ===>", decode);
     };
 
     fetchUser();
@@ -73,8 +72,8 @@ const Sidebar = () => {
             <a className="w-[143px] h-[143px] overflow-hidden rounded-full outline-[#3971FF] outline-4" href="/curentuserdetail">
               <img
               className="object-cover w-full h-full"
-                src={data?.image}
-                alt=""
+                src={data?.image || undefined}
+                alt="profile-image"
                 />
             </a>
 
@@ -111,10 +110,21 @@ const Sidebar = () => {
 
         <Button
           classname="bg-[#E55757] text-white py-[10px]  text-[15px] rounded-md cursor-pointer w-full"
-          onClick={logOut}>
+          onClick={handleOpenModal}>
           LogOut
         </Button>
       </div>
+
+      {isOpen && (
+        <ConfirmationModal
+        heading="Leaving So Soon?"
+        subheading="You’ll be signed out of your account. Don’t worry, you can log back in anytime."
+        lableTrue="Logout"
+        handleFalse={() => setIsOpen(false)}
+        handleTrue={logOut}
+        />
+      )}
+
         </>
     )
 }

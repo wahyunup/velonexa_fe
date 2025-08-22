@@ -5,7 +5,6 @@ export const getComment = async (id: number) => {
     const res = await axios.get(`http://localhost:3001/comments/feed/${id}`, {
       withCredentials: true,
     });
-    console.log(res.data);
     return res.data;
   } catch (error) {
     throw error;
