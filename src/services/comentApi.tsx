@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getComment = async (id: number) => {
   try {
-    const res = await axios.get(`http://localhost:3001/comments/feed/${id}`, {
+    const res = await axios.get(`https://velonexa-be.vercel.app/comments/feed/${id}`, {
       withCredentials: true,
     });
     return res.data;
@@ -14,7 +14,7 @@ export const getComment = async (id: number) => {
 export const createComment = async (id: number, content: any) => {
   try {
     const res = await axios.post(
-      `http://localhost:3001/comments/feed/${id}`,
+      `https://velonexa-be.vercel.app/comments/feed/${id}`,
       { content },
       { withCredentials: true }
     );
@@ -28,7 +28,7 @@ export const createComment = async (id: number, content: any) => {
 export const createCommentLike = async (feedId: number, likeId: number) => {
   try {
     const res = await axios.post(
-      `http://localhost:3001/comments/feed/${feedId}/like/${likeId}`, {},
+      `https://velonexa-be.vercel.app/comments/feed/${feedId}/like/${likeId}`, {},
       {
         withCredentials: true,
       }
@@ -43,7 +43,7 @@ export const createCommentLike = async (feedId: number, likeId: number) => {
 export const getCommentLikeStatus = async (feedId: number, likeId: number) => {
   try {
     const res = await axios.get(
-      `http://localhost:3001/comments/feed/${feedId}/like/${likeId}`,
+      `https://velonexa-be.vercel.app/comments/feed/${feedId}/like/${likeId}`,
       {
         withCredentials: true,
       }

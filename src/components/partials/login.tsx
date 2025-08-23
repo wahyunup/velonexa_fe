@@ -20,7 +20,7 @@ const PartialLogin = ({ classname }: { classname: string }) => {
   const handleLogin = async (e:React.FormEvent) => {
     e.preventDefault()
     try {
-      const res = await axios.post( "http://localhost:3001/users/login", useForm,
+      const res = await axios.post( "https://velonexa-be.vercel.app/users/login", useForm,
         {
           withCredentials: true,
         }
@@ -35,7 +35,7 @@ const PartialLogin = ({ classname }: { classname: string }) => {
 
   const getToken = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/token", {
+      const res = await axios.get("https://velonexa-be.vercel.app/token", {
         withCredentials: true,
       });
       console.log("dari token", res.data);

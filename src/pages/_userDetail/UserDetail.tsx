@@ -3,19 +3,16 @@ import { detailUser, getToken, getUserDetail } from "../../services/userApi";
 import AppLayout from "../layout/AppLayout";
 import UserDetailHeader from "../../components/partials/UserDetailHeader";
 import UserDetailFeed from "../../components/partials/UserDetailFeed";
-import { FaSpinner } from "react-icons/fa6";
 import { useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import type { GetFeedProps } from "../../components/ui";
+import type { GetFeedProps, MyJwtPayload } from "../../components/ui";
 import PostingOverview from "../../components/partials/PostingOverview";
 import { getFeeds } from "../../services/FeedApi";
 import {
   getFollowers,
   getFollowersUser,
-  getFollows,
 } from "../../services/followApi";
 import UserDetailSkeleton from "../../skeleton/CurrentUserDetails/UserDetailSkeleton";
-import NewChatModal from "../../components/modal/NewChat";
 import { getBookmark } from "../../services/bookmarkApi";
 import { BsBookmarkCheck, BsBookmarkCheckFill } from "react-icons/bs";
 import { IoImage, IoImageOutline } from "react-icons/io5";
@@ -31,7 +28,7 @@ const UserDetail = () => {
     email: "",
     image: "",
   });
-  const [userLogin, setUserLogin] = useState();
+  const [userLogin, setUserLogin] = useState<MyJwtPayload>();
 
   // console.log("user ===>", user);
 
@@ -52,7 +49,7 @@ const UserDetail = () => {
   useEffect(() => {
     const fetchUser = async () => {
       const res = await getToken();
-      const decode = jwtDecode(res);
+      const decode = jwtDecode<MyJwtPayload>(res);
       setUserLogin(decode);
     };
     fetchUser();

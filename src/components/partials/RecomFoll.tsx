@@ -2,7 +2,7 @@ import RecomUser from "../ui/RecomUser";
 import { getAllUser, getToken } from "../../services/userApi";
 import { useEffect, useState } from "react";
 import RecomendationSkeleton from "../../skeleton/Recommendation/RecommendationSkeleton";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode} from "jwt-decode";
 
 const RecomFoll = () => {
   const [users, setUsers] = useState([]);
@@ -12,7 +12,7 @@ const RecomFoll = () => {
   useEffect(() => {
     const fetchToken = async () => {
       const res = await getToken()
-      const decode = jwtDecode(res)
+      const decode = jwtDecode<any>(res)
       setCurrentUser_id(decode.id)
     }
     fetchToken()

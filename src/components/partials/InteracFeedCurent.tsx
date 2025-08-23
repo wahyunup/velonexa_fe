@@ -14,7 +14,7 @@ const InteracFeedCurrent = ({likeCount, feedId, isOpen}:InteracFeedCurentProps) 
 
 const getLikeStatus = async () => {
   try {
-    const res = await axios.get(`http://localhost:3001/feed/likes/${feedId}`, {
+    const res = await axios.get(`https://velonexa-be.vercel.app/feed/likes/${feedId}`, {
       withCredentials : true
     }) 
     console.log("dapet dari status like ===>",res.data.data.isLike);
@@ -26,7 +26,7 @@ const getLikeStatus = async () => {
 
   const fetchLike = async () => {
     try {
-      const res = await axios.post(`http://localhost:3001/feed/like/${feedId}`,
+      const res = await axios.post(`https://velonexa-be.vercel.app/feed/like/${feedId}`,
       {like : !isLike},
       {withCredentials: true}
     )

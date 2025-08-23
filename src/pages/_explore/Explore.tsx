@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import AppLayout from "../layout/AppLayout";
 import { getFeeds } from "../../services/FeedApi";
-import { FaSpinner } from "react-icons/fa6";
 import PostingOverview from "../../components/partials/PostingOverview";
 import type { GetFeedProps } from "../../components/ui";
 import { PiCoffeeDuotone } from "react-icons/pi";
-import { Navigate, useNavigate } from "react-router-dom";
-import { getToken } from "../../services/userApi";
 import ExplorerSkeleton from "../../skeleton/Explorer/ExplorerSkeleton";
 
 const Explore = () => {

@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { MdVerified } from "react-icons/md";
 import { Follow, getFollowers } from "../../services/followApi";
-import { getToken, getUserDetail } from "../../services/userApi";
+import {getUserDetail } from "../../services/userApi";
 import { createNotification } from "../../services/NotifApi";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 
 const RecomUser = ({
   id,

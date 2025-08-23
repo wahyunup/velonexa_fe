@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const createNotification = async (data: any) => {
   try {
-    const res = await axios.post("http://localhost:3001/notification", data, {
+    const res = await axios.post("https://velonexa-be.vercel.app/notification", data, {
       withCredentials: true,
     });
     console.log("notification output ===>",res.data)
@@ -14,7 +14,7 @@ export const createNotification = async (data: any) => {
 
 export const getNotif = async () => {
   try {
-    const res = await axios.get("http://localhost:3001/notifications",{
+    const res = await axios.get("https://velonexa-be.vercel.app/notifications",{
         withCredentials: true
     })
     return res.data
@@ -25,7 +25,7 @@ export const getNotif = async () => {
 
 export const updateNotif = async (id:number) => {
   try {
-    const res = await axios.patch(`http://localhost:3001/notification/${id}/read-notif`,{},{
+    const res = await axios.patch(`https://velonexa-be.vercel.app/notification/${id}/read-notif`,{},{
         withCredentials: true
     })
     return res.data

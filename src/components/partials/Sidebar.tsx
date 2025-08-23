@@ -4,8 +4,6 @@ import { GoHome } from "react-icons/go";
 import { IoSearchOutline } from "react-icons/io5";
 import { AiOutlineMessage } from "react-icons/ai";
 import { IoCompassOutline } from "react-icons/io5";
-import { PiFilmReelLight } from "react-icons/pi";
-import { IoNotificationsOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -14,31 +12,29 @@ import { jwtDecode } from "jwt-decode";
 import { getToken } from "../../services/userApi";
 import type { appLayoutProps } from "../../pages/layout/type";
 import { MdVerified } from "react-icons/md";
-import { getNotif } from "../../services/NotifApi";
 import ConfirmationModal from "../modal/Confirmation";
 
+
 const Sidebar = () => {
-    const [data, setData] = useState({
+  const [data, setData] = useState({
     displayname: "",
     username: "",
-    image: ""
+    image: "",
   });
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false)
-  
-  
- 
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const logOut = async () => {
     try {
       const res = await axios.patch(
-        "http://localhost:3001/users/logout",
+        "https://velonexa-be.vercel.app/users/logout",
         null,
         {
           withCredentials: true,
         }
       );
-      setIsOpen(false)
+      setIsOpen(false);
       console.log(res.data.msg);
       return toast.success(res.data?.msg, {
         onClose: () => navigate("/auth/login"),
@@ -49,41 +45,59 @@ const Sidebar = () => {
   };
 
   const handleOpenModal = () => {
-    setIsOpen(true)
-  }
+    setIsOpen(true);
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
+      setIsLoading(false);
       const token = await getToken();
       const decode = jwtDecode(token) as appLayoutProps;
-      setData({ displayname: decode.displayname, username: decode.username,image:decode.image });
+      setData({
+        displayname: decode.displayname,
+        username: decode.username,
+        image: decode.image,
+      });
+      setIsLoading(true);
     };
 
     fetchUser();
   }, []);
 
-    return (
-        <>
-        {/* w-[372px] */}
-        <div className=" p-[15px] flex flex-col h-screen justify-between bg-white border border-r-[#ECECEC] sticky top-0">
+  return (
+    <>
+      {/* w-[372px] */}
+      <div className=" p-[15px] flex flex-col h-screen justify-between bg-white border border-r-[#ECECEC] sticky top-0">
         <div>
           <div className="flex flex-col items-center border-b border-b-[#f1f1f1] py-10">
- 
-            <a className="w-[143px] h-[143px] overflow-hidden rounded-full outline-[#3971FF] outline-4" href="/curentuserdetail">
-              <img
-              className="object-cover w-full h-full"
-                src={data?.image || undefined}
-                alt="profile-image"
-                />
-            </a>
+            {!isLoading ? (
+              <>
+                <div className="w-[143px] h-[143px] bg-gray-100 rounded-full animate-pulse"></div>
+                <div className="bg-gray-100 mt-[13px] h-3 w-25 animate-pulse"></div>
+                <div className="bg-gray-100 mt-[10px] h-3 w-30 animate-pulse"></div>
+              </>
+            ) : (
+              <>
+                <a
+                  className="w-[143px] h-[143px] overflow-hidden rounded-full outline-[#3971FF] outline-4"
+                  href="/curentuserdetail">
+                  <img
+                    className="object-cover w-full h-full"
+                    src={data?.image || undefined}
+                    alt="profile-image"
+                  />
+                </a>
 
-            <span className="text-center text-[19px] pt-[13px] flex items-center gap-1 justify-center">
-              {data?.displayname} 
-              <MdVerified className=" right-0 bottom-10" color="#3971FF"/>
-            </span>
-            <span className="text-center text-[15px] text-[#A5A5A5]">
-              @{data?.username}
-            </span>
+                <span className="text-center text-[19px] pt-[13px] flex items-center gap-1 justify-center">
+                  {data?.displayname}
+                  <MdVerified className=" right-0 bottom-10" color="#3971FF" />
+                </span>
+
+                <span className="text-center text-[15px] text-[#A5A5A5]">
+                  @{data?.username}
+                </span>
+              </>
+            )}
           </div>
 
           <div className="flex flex-col gap-2 pt-10 w-[300px]">
@@ -108,25 +122,28 @@ const Sidebar = () => {
           </div>
         </div>
 
-        <Button
-          classname="bg-[#E55757] text-white py-[10px]  text-[15px] rounded-md cursor-pointer w-full"
-          onClick={handleOpenModal}>
-          LogOut
-        </Button>
+        <div className="flex flex-col items-center gap-8">
+          
+
+          <Button
+            classname="bg-[#E55757] text-white py-[10px]  text-[15px] rounded-md cursor-pointer w-full"
+            onClick={handleOpenModal}>
+            LogOut
+          </Button>
+        </div>
       </div>
 
       {isOpen && (
         <ConfirmationModal
-        heading="Leaving So Soon?"
-        subheading="You’ll be signed out of your account. Don’t worry, you can log back in anytime."
-        lableTrue="Logout"
-        handleFalse={() => setIsOpen(false)}
-        handleTrue={logOut}
+          heading="Leaving So Soon?"
+          subheading="You’ll be signed out of your account. Don’t worry, you can log back in anytime."
+          lableTrue="Logout"
+          handleFalse={() => setIsOpen(false)}
+          handleTrue={logOut}
         />
       )}
+    </>
+  );
+};
 
-        </>
-    )
-}
-
-export default Sidebar
+export default Sidebar;

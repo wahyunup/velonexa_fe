@@ -2,14 +2,14 @@ import axios from "axios";
 
 export const getToken = async () => {
  try {
-      const res = await axios.get("http://localhost:3001/token", {
+      const res = await axios.get("https://velonexa-be.vercel.app/token", {
         withCredentials: true,
       });
         return res.data.accessToken;
     } catch (error: any) {
 
       if (error.response.data && error.response.data === 401) {
-        const retry = await axios.get("http://localhost:3001/token", {
+        const retry = await axios.get("https://velonexa-be.vercel.app/token", {
         withCredentials: true,
       });
       return retry.data.accessToken
@@ -20,7 +20,7 @@ export const getToken = async () => {
 
 export const getAllUser = async () => {
   try {
-    const res = await axios.get("http://localhost:3001/users", {
+    const res = await axios.get("https://velonexa-be.vercel.app/users", {
       withCredentials : true
     })
     return res.data.data
@@ -31,7 +31,7 @@ export const getAllUser = async () => {
 
 export const getUserDetail = async () => {
   try {
-    const res = await axios.get("http://localhost:3001/user", {
+    const res = await axios.get("https://velonexa-be.vercel.app/user", {
       withCredentials : true
     })
     return res.data
@@ -42,7 +42,7 @@ export const getUserDetail = async () => {
 
 export const editUser = async (data:any) => {
   try {
-    const res = await axios.patch("http://localhost:3001/user/edit", data, {
+    const res = await axios.patch("https://velonexa-be.vercel.app/user/edit", data, {
       withCredentials : true,
     })
     console.log("edit user", res.data);
@@ -54,7 +54,7 @@ export const editUser = async (data:any) => {
 
 export const detailUser = async (id:Number) => {
   try {
-    const res = await axios.get(`http://localhost:3001/user-detail/${id}`)
+    const res = await axios.get(`https://velonexa-be.vercel.app/user-detail/${id}`)
     return res.data
   } catch (error) {
   throw error    
@@ -63,7 +63,7 @@ export const detailUser = async (id:Number) => {
 
 export const uploadPhotoUser = async (file:any) => {
   try {
-    const res = await axios.patch(`http://localhost:3001/user/upload-image`, file , {
+    const res = await axios.patch(`https://velonexa-be.vercel.app/user/upload-image`, file , {
       withCredentials : true
     })
     return res.data

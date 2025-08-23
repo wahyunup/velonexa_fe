@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import { useEffect, useState } from "react";
@@ -8,9 +7,7 @@ import Interaction from "../../components/partials/Interaction";
 import { jwtDecode } from "jwt-decode";
 import type { appLayoutProps } from "../layout/type";
 import { getToken } from "../../services/userApi";
-import { IoNotificationsOutline } from "react-icons/io5";
-import NotificationList from "../../components/partials/NotificationList";
-import { getNotif } from "../../services/NotifApi";
+import Saweria from "../../components/ui/Saweria";
 
 const Home = () => {
 
@@ -47,7 +44,8 @@ const Home = () => {
             <Interaction
               profileImage={data.profileImage}
               username={data.username}
-            />
+              />
+              <Saweria/>
           </div>
         </div>
       </AppLayout>

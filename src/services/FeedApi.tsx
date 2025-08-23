@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const createFeed = async (useForm: any) => {
   try {
-    const res = await axios.post("http://localhost:3001/feed", useForm, {
+    const res = await axios.post("https://velonexa-be.vercel.app/feed", useForm, {
       withCredentials: true,
     });
     console.log("hasil bikin feed",res.data)
@@ -14,7 +14,7 @@ export const createFeed = async (useForm: any) => {
 
 export const getFeeds = async () => {
   try {
-    const res = await axios.get("http://localhost:3001/feeds-explore")
+    const res = await axios.get("https://velonexa-be.vercel.app/feeds-explore")
     return res.data
   } catch (error) {
     throw error    
@@ -23,7 +23,7 @@ export const getFeeds = async () => {
 
 export const deleteFeed = async (feed_id:number) => {
   try {
-    const res = await axios.delete(`http://localhost:3001/feed/${feed_id}`)
+    const res = await axios.delete(`https://velonexa-be.vercel.app/feed/${feed_id}`)
     return res.data
   } catch (error) {
     throw error    

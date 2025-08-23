@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getFollows = async () => {
     try {
-        const res = await axios.get(`http://localhost:3001/follows`,{
+        const res = await axios.get(`https://velonexa-be.vercel.app/follows`,{
             withCredentials : true
         })
         return res.data
@@ -14,7 +14,7 @@ export const getFollows = async () => {
 
 export const getFollowers = async (id:number) => {
     try {
-        const res = await axios.get(`http://localhost:3001/follows/${id}`,{
+        const res = await axios.get(`https://velonexa-be.vercel.app/follows/${id}`,{
             withCredentials : true
         })
         return res.data
@@ -26,7 +26,7 @@ export const getFollowers = async (id:number) => {
 
 export const getFollowersUser = async (id:number) => {
     try {
-        const res = await axios.get(`http://localhost:3001/follower/${id}`,{
+        const res = await axios.get(`https://velonexa-be.vercel.app/follower/${id}`,{
             withCredentials : true
         })
         return res.data
@@ -38,7 +38,7 @@ export const getFollowersUser = async (id:number) => {
 
 export const Follow = async (id:number) => {
     try {
-        const res = await axios.post(`http://localhost:3001/follow/${id}`,{},{
+        const res = await axios.post(`https://velonexa-be.vercel.app/follow/${id}`,{},{
             withCredentials : true
         })
         return res.data
@@ -50,7 +50,7 @@ export const Follow = async (id:number) => {
 
 export const unfollow = async (id:number) => {
     try {
-        const res = await axios.delete(`http://localhost:3001/unfollow/${id}`,{
+        const res = await axios.delete(`https://velonexa-be.vercel.app/unfollow/${id}`,{
             withCredentials : true
         })
         return res.data

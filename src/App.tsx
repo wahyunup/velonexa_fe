@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/home/Home";
 import Login from "./pages/auth/login/login";
@@ -10,15 +10,10 @@ import Reels from "./pages/_reels/Reels";
 import Notification from "./pages/_notification/Notification";
 import CurentUserDetail from "./pages/_userDetail/CurentUserDetail";
 import Profile from "./pages/_settings/Profile/Profile";
-import Account from "./pages/_settings/Account/Account";
-import Block from "./pages/_settings/Block/Block";
-import Appearance from "./pages/_settings/Appearance/Appearance";
-import Language from "./pages/_settings/Language/Language";
-import Support from "./pages/_settings/Support/Support";
+
 import Fallback from "./pages/fallback/Fallback";
 import UserDetail from "./pages/_userDetail/UserDetail";
-import { useEffect } from "react";
-import { getToken } from "./services/userApi";
+
 
 function App() {
  

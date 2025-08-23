@@ -17,7 +17,7 @@ const Profile = () => {
   });
 
   const [isOpen, setIsOpen] = useState(false);
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleIsOpen = () => {
@@ -26,8 +26,10 @@ const Profile = () => {
 
   const handleUploadPhoto = async () => {
     const formData = new FormData();
-    formData.append("file", file);
 
+    if (file) {
+      formData.append("file", file);
+    }
     try {
       setIsLoading(true);
       const res = await uploadPhotoUser(formData);
@@ -35,7 +37,7 @@ const Profile = () => {
         onClose: () => location.reload(),
       });
       setDataUser((prev) => ({ ...prev, image: res.image }));
-    } catch (error : any) {
+    } catch (error: any) {
       toast.error(error?.response?.data?.msg || "Upload failed");
     }
   };
@@ -85,7 +87,11 @@ const Profile = () => {
         <div className="flex-col flex  gap-[28px] w-full">
           <div className="flex justify-between items-center w-full bg-[#F8F8F8] outline-1 outline-[#EFEFEF] h-[189px] rounded-4xl px-[50px]">
             <div className="w-[111px] h-[111px] overflow-hidden rounded-full outline-3 outline-[#5484FF]">
-              <img className="object-cover w-full h-full" src={dataUser.image} alt="" />
+              <img
+                className="object-cover w-full h-full"
+                src={dataUser.image}
+                alt=""
+              />
             </div>
             <button
               onClick={handleIsOpen}
@@ -158,7 +164,11 @@ const Profile = () => {
                       type="file"
                       name=""
                       id="file-upload"
-                      onChange={(e) => setFile(e.target.files?.[0])}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        if (e.target.files && e.target.files[0]) {
+                          setFile(e.target.files?.[0]) }
+                        }
+                      } 
                     />
                     <label
                       htmlFor="file-upload"

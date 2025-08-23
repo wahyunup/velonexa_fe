@@ -25,7 +25,7 @@ const FeedComment = ({
   useEffect(() => {
     const fetchToken = async () => {
       const res = await getToken();
-      const decode = jwtDecode(res);
+      const decode = jwtDecode<{image:string}>(res);
 
       setUserLogin({ image: decode.image });
     };

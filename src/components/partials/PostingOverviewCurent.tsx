@@ -38,7 +38,7 @@ const PostingOverviewCurent = ({
   const [commentForm, setCommentForm] = useState({
     content: "",
   });
-  const [user, setUser] = useState()
+  const [user, setUser] = useState<any>()
   const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {

@@ -18,6 +18,7 @@ const Interaction = ({
       <h1 className="text-[24px] font-medium">Created</h1>
       <ButtonPost profileImage={profileImage} username={username} />
       <RecomFoll />
+        
     </div>
   );
 };

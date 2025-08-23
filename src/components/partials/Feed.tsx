@@ -5,14 +5,11 @@ import Feedheader from "../ui/FeedHeader";
 import InteracFeed from "../ui/interacFeed";
 import { useEffect, useState } from "react";
 import type { GetFeedProps } from "../ui";
-import { FaArrowDownLong, FaSpinner } from "react-icons/fa6";
+import { FaArrowDownLong } from "react-icons/fa6";
 import { FaArrowUpLong } from "react-icons/fa6";
 import { PiCoffeeDuotone } from "react-icons/pi";
 import PostingOverview from "./PostingOverview";
 import FeedSkeleton from "../../skeleton/Feed/FeedSkeleton";
-import { getBookmark } from "../../services/bookmarkApi";
-import { getToken } from "../../services/userApi";
-import { jwtDecode } from "jwt-decode";
 
 const Feed = () => {
   const [feed, setFeed] = useState<GetFeedProps[]>([]);
@@ -24,7 +21,7 @@ const Feed = () => {
   const getFeed = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:3001/feeds?page=${page}&limit=3`
+        `https://velonexa-be.vercel.app/feeds?page=${page}&limit=3`
       );
       const data = res.data;
       setFeed(data);

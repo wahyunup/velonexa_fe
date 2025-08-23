@@ -82,7 +82,7 @@ const CurentUserDetail = () => {
   }, [user.id]);
 
   const handlingReport = (feed_id: number) => {
-    setFeed((prev) => prev.filter((feed) => feed.id !== feed_id));
+    setFeed((prev) => prev.filter((feed:{id:number}) => feed.id !== feed_id));
   };
 
   useEffect(() => {

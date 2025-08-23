@@ -1,10 +1,10 @@
-import type { FeedheaderProps } from "../ui";
+import type { FeedheaderProps, MyJwtPayload } from "../ui";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useEffect, useState } from "react";
 import { MdReport } from "react-icons/md";
 import { getToken } from "../../services/userApi";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode} from "jwt-decode";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { deleteFeed } from "../../services/FeedApi";
 import { toast, ToastContainer } from "react-toastify";
@@ -20,14 +20,12 @@ const Feedheader = ({
   handlingReport
 }: FeedheaderProps) => {
 
-  
-  
   dayjs.extend(relativeTime);
   const dateTime = datePosting;
   const date = dayjs(dateTime).fromNow();
   const [isOpen, setIsOpen] = useState(false);
   const [successCopy, setsuccessCopy] = useState(false);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<MyJwtPayload>();
   const [isOpenModalDelete, setIsOpenModalDelete] = useState(false)
   const [isOpenModalReport, setIsOpenModalReport] = useState(false)
   // console.log("debug",user.id);
@@ -35,7 +33,7 @@ const Feedheader = ({
   useEffect(() => {
     const fetchUser = async () => {
       const res = await getToken();
-      const decode = jwtDecode(res);
+      const decode = jwtDecode<MyJwtPayload>(res);
       setUser(decode);
     };
     fetchUser();

@@ -4,7 +4,7 @@ import { GoHeartFill } from "react-icons/go";
 import { BsShare } from "react-icons/bs";
 import { IoBookmarkOutline } from "react-icons/io5";
 import { IoBookmark } from "react-icons/io5";
-import type { InteracFeedProps } from "../ui";
+import type { InteracFeedProps, MyJwtPayload } from "../ui";
 import axios from "axios";
 import { createNotification } from "../../services/NotifApi";
 import { createBookmark, getBookmark } from "../../services/bookmarkApi";
@@ -21,12 +21,12 @@ const InteracFeed = ({
   const [likeStatus, setLikeStatus] = useState(false);
   const [isLike, setIsLike] = useState();
   const [isBookmark, setIsBookmark] = useState(false);
-  const [userLogin, setUserLogin] = useState()
+  const [userLogin, setUserLogin] = useState<MyJwtPayload>()
 
   useEffect(() => {
     const fetchUser = async () => {
       const res = await getToken()
-      const decode = jwtDecode(res)
+      const decode = jwtDecode<MyJwtPayload>(res)
       setUserLogin(decode)      
     }
     fetchUser()
@@ -36,7 +36,7 @@ const InteracFeed = ({
   useEffect(() => {
     const getBookmarkStatus = async () => {
       const res = await getBookmark(user_id);
-      const saved = res.bookmark.some((b) => b.isSaved && b.feed_id === feed.id && b.actor_id === userLogin?.id);
+      const saved = res.bookmark.some((b:any) => b.isSaved && b.feed_id === feedId && b.actor_id === userLogin?.id);
       setIsBookmark(saved);
     };
     getBookmarkStatus();
@@ -46,7 +46,7 @@ const InteracFeed = ({
     const getLikeStatus = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3001/feed/likes/${feedId}`,
+          `https://velonexa-be.vercel.app/feed/likes/${feedId}`,
           {
             withCredentials: true,
           }
@@ -61,7 +61,7 @@ const InteracFeed = ({
   const fetchLike = async () => {
     try {
       const res = await axios.post(
-        `http://localhost:3001/feed/like/${feedId}`,
+        `https://velonexa-be.vercel.app/feed/like/${feedId}`,
         { like: !isLike },
         { withCredentials: true }
       );

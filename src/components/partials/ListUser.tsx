@@ -14,21 +14,22 @@ const ListUser = ({
   handleFalse: () => void;
   allUser: user[];
 }) => {
+
   const [hover, setHover] = useState(false);
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState<any | null>();
   const navigate = useNavigate()
 
   useEffect(() => {
     const fetchToken = async () => {
       const res = await getToken();
-      const decode = jwtDecode(res);
-      setCurrentUser(decode);
+      const decode = jwtDecode(res)
+      setCurrentUser(decode)
     };
     fetchToken();
   }, []);
 
- const filteredAllUser = currentUser
-  ? allUser.filter((user) => user.id !== currentUser.id)
+ const filteredAllUser = currentUser 
+  ? allUser.filter((user:any) => user.id !== currentUser.id)
   : allUser;
   
   return (
@@ -42,7 +43,7 @@ const ListUser = ({
           </button>
 
           <div className="flex flex-col gap-2 items-center thin-scrollbar overflow-y-scroll mt-10 h-100">
-            {filteredAllUser.map((user) => (
+            {filteredAllUser.map((user:any) => (
               <div className="flex justify-between w-full items-center hover:bg-gray-50 p-3 rounded-2xl">
                 <div className="flex gap-3 items-center">
                   <div className="h-12 w-12 overflow-hidden rounded-full">

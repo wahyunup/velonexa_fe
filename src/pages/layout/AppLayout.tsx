@@ -11,6 +11,7 @@ const AppLayout = ({
   children: React.ReactNode;
   classname: string;
 }) => {
+
   const navigate = useNavigate();
   useEffect(() => {
     const cekToken = async () => {
@@ -30,6 +31,7 @@ const AppLayout = ({
         {/* sidebar */}
         <Sidebar />
         {children}
+       
       </div>
       <ToastContainer />
     </>

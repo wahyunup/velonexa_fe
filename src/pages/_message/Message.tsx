@@ -5,14 +5,13 @@ import {
   getChat,
   getChatCurrentUser,
 } from "../../services/ChatApi";
-import type { ChatProps, userChatListProps, UserProps } from "../type";
+import type {userChatListProps, UserProps } from "../type";
 import UserChatList from "../../components/partials/UserChatList";
 import { getAllUser, getToken } from "../../services/userApi";
 import { jwtDecode } from "jwt-decode";
 import InputChat from "../../components/partials/InputChat";
 import BodyChat from "../../components/partials/BodyChat";
 import ChatListSkeleton from "../../skeleton/ChatList/ChatListSkeleton";
-import NewChatModal from "../../components/modal/NewChat";
 import ListUser from "../../components/partials/ListUser";
 
 const Message = () => {
@@ -25,7 +24,6 @@ const Message = () => {
   const [user, setUser] = useState<UserProps | undefined>();
   const [chatValue, setChatValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const [isOpenUserList, setIsOpenUserList] = useState(false);
   const [allUser, setAllUser] = useState([]);
 
@@ -82,9 +80,6 @@ const Message = () => {
     return res;
   };
 
-  const handleTrue = (user: any) => {
-    setIsOpen(true);
-  };
 
   return (
     <AppLayout classname="flex">
@@ -122,7 +117,7 @@ const Message = () => {
         <div className="bg-white w-full ">
           {selectedChat === null ? (
             <div className="flex h-full justify-center items-center">
-              <p>
+              <p className="text-center">
                 Pick someone from the list on the left and start the
                 conversation.
               </p>

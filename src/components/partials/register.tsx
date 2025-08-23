@@ -28,7 +28,7 @@ const RegisterPartial = ({
 
   const handleRegister = async () => {
     try {
-      const res = await axios.post("http://localhost:3001/users", useForm);
+      const res = await axios.post("https://velonexa-be.vercel.app/users", useForm);
       toast.success(res.data.msg, {
         onClose : () => navigate("/auth/login")
       });
@@ -39,7 +39,7 @@ const RegisterPartial = ({
 
    const getToken = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/token", {
+      const res = await axios.get("https://velonexa-be.vercel.app/token", {
         withCredentials: true,
       });
       console.log("dari token", res.data);

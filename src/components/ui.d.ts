@@ -38,6 +38,7 @@ export interface GetFeedProps {
   id: number;
   user_id: number;
   username: string;
+  feed: any
   postingOverview: () => void;
   handleSelectedFeed: () => void;
 }
@@ -105,3 +106,9 @@ export interface CommentProps {
   likes: { createdAt: number };
   field_comment: string;
 }
+
+  export interface MyJwtPayload {
+    id: number,
+    email : string,
+    username : string
+  }
