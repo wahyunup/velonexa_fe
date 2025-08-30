@@ -80,7 +80,7 @@ const Feed = () => {
             </div>
           ))
       ) : (
-        <div className="flex flex-col gap-20 mt-24 w-[500px]">
+        <div className="flex flex-col gap-20 mt-24 2xl:w-[500px] lg:w-[450px]">
           {feed.map((data) => {
             return (
               <div className="flex flex-col gap-[15px]" key={data.id}>

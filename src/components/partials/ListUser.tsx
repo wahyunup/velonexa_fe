@@ -22,6 +22,10 @@ const ListUser = ({
   useEffect(() => {
     const fetchToken = async () => {
       const res = await getToken();
+        if (!res) {
+        navigate("/auth/login");
+        setCurrentUser(null)
+      }
       const decode = jwtDecode(res)
       setCurrentUser(decode)
     };
@@ -49,7 +53,7 @@ const ListUser = ({
                   <div className="h-12 w-12 overflow-hidden rounded-full">
                     <img
                       className="w-full h-full object-cover"
-                      src={user.image}
+                      src={user?.image}
                       alt=""
                     />
                   </div>

@@ -29,7 +29,7 @@ const Input = ({
     <div className="border border-[#DEDDDD] rounded-lg h-[68px] px-[31px] flex items-center gap-[13px]">
       {children}
       <input
-        className="h-full w-full focus:outline-0 text-[21px] font-normal placeholder:text-[#BEBEBE]"
+        className="h-full w-full focus:outline-0 text-[17px] md:text-[21px] font-normal placeholder:text-[#BEBEBE]"
         placeholder={placeholder}
         type={inputType}
         name={name}

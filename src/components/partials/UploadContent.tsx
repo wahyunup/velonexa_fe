@@ -52,7 +52,7 @@ const UploadContent = ({
   }, []);
 
   return (
-    <div className="fixed inset-0 flex justify-center bg-black/20 backdrop-blur-xs items-center">
+    <div className="fixed inset-0 flex justify-center bg-black/20 backdrop-blur-xs items-center z-10">
       <AnimatePresence>
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}

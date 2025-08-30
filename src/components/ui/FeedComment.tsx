@@ -4,6 +4,7 @@ import { getToken } from "../../services/userApi";
 import { jwtDecode } from "jwt-decode";
 import { FiSend } from "react-icons/fi";
 import { createNotification } from "../../services/NotifApi";
+import { useNavigate } from "react-router-dom";
 
 const FeedComment = ({
   handlePostingOverview,
@@ -19,18 +20,25 @@ const FeedComment = ({
     const [commentForm, setCommentForm] = useState({
     content: "",
   });
+  const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate();
 
 
 
   useEffect(() => {
+    setIsLoading(false)
     const fetchToken = async () => {
       const res = await getToken();
+      if(!res) {
+        navigate("auth/login")
+        setUserLogin({image:""})
+      }
       const decode = jwtDecode<{image:string}>(res);
-
       setUserLogin({ image: decode.image });
+      setIsLoading(true)
     };
     fetchToken();
-  });
+  },[]);
 
   useEffect(() => {
     const fetchComment = async () => {
@@ -73,13 +81,17 @@ const FeedComment = ({
         className="text-[14px] text-[#888888] font-medium cursor-pointer">
         see {comments.length} comment
       </span>
-      <form onSubmit={handleCreateComment} className="flex items-center bg-[#F8F8F8] rounded-full py-[8px] pr-[15px] gap-3">
+      <form onSubmit={handleCreateComment} className="flex items-center bg-[#F8F8F8] rounded-full py-[8px] pr-[15px] gap-3 pl-[10px]">
         <div className="overflow-hidden rounded-full aspect-square w-9 h-8">
-          <img
+          {isLoading ? (
+            <img
             src={userLogin.image}
             className="w-full h-full object-cover"
             alt=""
-          />
+            />
+          ) : (
+            <div className="w-20 h-20 bg-gray-200 object-cover animate-pulse"></div>
+          )}
         </div>
         <input type="text" onChange={handleChange} value={commentForm.content} name="comment" className="w-full outline-0" placeholder="comment" />
         <button type="submit">

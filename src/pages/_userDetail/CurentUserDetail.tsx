@@ -13,6 +13,7 @@ import { BsBookmarkCheck } from "react-icons/bs";
 import { BsBookmarkCheckFill } from "react-icons/bs";
 import { getBookmark } from "../../services/bookmarkApi";
 import { GoBookmarkSlash } from "react-icons/go";
+import { CiImageOff } from "react-icons/ci";
 
 const CurentUserDetail = () => {
   const [user, setUser] = useState({
@@ -82,7 +83,9 @@ const CurentUserDetail = () => {
   }, [user.id]);
 
   const handlingReport = (feed_id: number) => {
-    setFeed((prev) => prev.filter((feed:{id:number}) => feed.id !== feed_id));
+    setFeed((prev) =>
+      prev.filter((feed: { id: number }) => feed.id !== feed_id)
+    );
   };
 
   useEffect(() => {
@@ -96,8 +99,7 @@ const CurentUserDetail = () => {
 
   return (
     <>
-      <AppLayout
-        classname={`${!loading ? "justify-between items-center" : ""}`}>
+      <AppLayout classname={`${!loading ? "justify-between" : ""}`}>
         {!loading ? (
           <>
             <UserDetailSkeleton />
@@ -133,7 +135,7 @@ const CurentUserDetail = () => {
                   </button>
                   <button
                     onClick={() => setIsActive("saved")}
-                    className={` relative cursor-pointer flex gap-2 items-center ${
+                    className={`cursor-pointer flex gap-2 items-center ${
                       isActive === "saved" ? "text-[#3971FF]" : "text-gray-400"
                     } `}>
                     {isActive === "saved" ? (
@@ -145,45 +147,61 @@ const CurentUserDetail = () => {
                   </button>
                 </div>
 
-                <div className="grid grid-cols-3  gap-3 mt-[63px]">
+                <div className="grid grid-cols-3 gap-3 mt-[63px] mb-[20px] md:px-[150px] 2xl:px-[0px]">
                   {isActive === "post" ? (
-                    <>
-                      {feed.map((f: GetFeedProps) => (
-                        <div
-                          key={f.id}
-                          className=" aspect-square overflow-hidden cursor-pointer"
-                          onClick={() => handleSelectedFeed(f)}>
-                          <UserDetailFeed image={f.image} />
+                    feed.length > 0 ? (
+                      <>
+                        {feed.map((f: GetFeedProps) => (
+                          <div
+                            key={f.id}
+                            className="aspect-square overflow-hidden cursor-pointer"
+                            onClick={() => handleSelectedFeed(f)}>
+                            <UserDetailFeed image={f.image} />
+                          </div>
+                        ))}
+                      </>
+                    ) : (
+                      <>
+                        <div></div>
+                        <div className="flex flex-col items-center gap-5">
+                          <CiImageOff size={40} />
+                          <h1 className="text-[21px] font-medium text-center ">
+                            No Feed Posts Yet
+                          </h1>
+                          <p className="text-center text-[16px]">
+                            Create posts to easily find them again later.
+                          </p>
                         </div>
-                      ))}
-                    </>
+                        <div></div>
+                      </>
+                    )
                   ) : isActive === "saved" ? (
-                    <>
-                      {bookmark.length > 0 ? (
-                        bookmark.map((b: GetFeedProps) => (
+                    bookmark.length > 0 ? (
+                      <>
+                        {bookmark.map((b: GetFeedProps) => (
                           <div
                             key={b.id}
-                            className=" aspect-square overflow-hidden cursor-pointer"
+                            className="aspect-square overflow-hidden cursor-pointer"
                             onClick={() => handleSelectedFeed(b.feed)}>
                             <UserDetailFeed image={b.feed?.image} />
                           </div>
-                        ))
-                      ) : (
-                        <>
-                          <div></div>
-                          <div className="flex flex-col items-center gap-5">
-                            <GoBookmarkSlash size={40} />
-                            <h1 className="text-[21px] font-medium text-center ">
-                              No Saved Posts Yet
-                            </h1>
-                            <p className=" text-center text-[16px]">
-                              Save posts to easily find them again later.
-                            </p>
-                          </div>
-                          <div></div>
-                        </>
-                      )}
-                    </>
+                        ))}
+                      </>
+                    ) : (
+                      <>
+                        <div></div>
+                        <div className="flex flex-col items-center gap-5">
+                          <GoBookmarkSlash size={40} />
+                          <h1 className="text-[21px] font-medium text-center ">
+                            No Saved Posts Yet
+                          </h1>
+                          <p className="text-center text-[16px]">
+                            Save posts to easily find them again later.
+                          </p>
+                        </div>
+                        <div></div>
+                      </>
+                    )
                   ) : null}
                 </div>
               </div>

@@ -3,11 +3,11 @@ const UserDetailSkeleton = () => {
     <>
       <div className=" w-full 2xl:flex 2xl:justify-center">
         <div className="2xl:w-[1000px] px-10">
-          <div className="sticky top-0 bg-[#FCFCFC]">
+          <div className="sticky top-0 bg-[#FCFCFC] z-10">
             <div className="flex gap-[37px] pt-20 px-10 ">
               <div className="flex flex-col items-center gap-[18px]">
-                <div className="w-[131px] h-[131px] rounded-full overflow-hidden bg-gray-200 animate-pulse">
-                  <div className="object-cover w-full h-full" />
+                <div className="w-[131px] h-[131px]  rounded-full overflow-hidden bg-gray-200 animate-pulse">
+                  {/* <div className="object-cover w-full h-full" /> */}
                 </div>
               </div>
 
@@ -36,9 +36,9 @@ const UserDetailSkeleton = () => {
             <div className="bg-[#ECECEC] h-[1px] w-full mt-[48px]"></div>
           </div>
 
-          <div className="grid grid-cols-3 gap-3 mt-[63px]">
+          <div className="grid grid-cols-3 gap-3 mt-[63px] mb-[20px] md:px-[150px] 2xl:px-[0px]">
             {Array.from({length:6}).map(() => ( 
-            <div className="  aspect-square overflow-hidden cursor-pointer bg-gray-200 animate-pulse">
+            <div className=" aspect-square overflow-hidden cursor-pointer bg-gray-200 animate-pulse">
               <div className="object-cover h-full w-full" />
             </div>
             ))}

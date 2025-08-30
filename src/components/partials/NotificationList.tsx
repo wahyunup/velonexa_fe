@@ -42,17 +42,17 @@ const NotificationList = ({
     <>
       <div className={`flex py-[10px] px-[15px] justify-between  hover:bg-gray-50 rounded-xl ${!notification ? "bg-[#f7faff]" : null}`}>
         <a href={`/userdetail/${user_id}`} onClick={handleisRead} className="flex items-center">
-          <div className="w-[27px] h-[27px] rounded-full overflow-hidden">
+          <div className="w-[27px] h-[27px]  rounded-full overflow-hidden">
             <img className="w-full h-full" src={actorImage} alt="" />
           </div>
           <div>
-            <p className="text-[15px] text-[#101010]">
+            <p className="2xl:text-[15px] md:text-sm text-[#101010]">
               <span className="font-semibold ml-[10px]">{username}</span> {children}
             </p>
           </div>
         </a>
 
-        <div className="w-[55px] h-[55px] overflow-hidden rounded-[6px]">
+        <div className="2xl:w-[55px] 2xl:h-[55px] md:w-[45px] md:h-[45px] overflow-hidden rounded-[6px]">
           {imageFeed && <img className="h-full w-full" src={imageFeed} />}
         </div>
       </div>

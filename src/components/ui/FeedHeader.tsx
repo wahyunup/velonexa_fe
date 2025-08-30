@@ -9,6 +9,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { deleteFeed } from "../../services/FeedApi";
 import { toast, ToastContainer } from "react-toastify";
 import ConfirmationModal from "../modal/Confirmation";
+import { useNavigate } from "react-router-dom";
 
 const Feedheader = ({
   username,
@@ -28,11 +29,19 @@ const Feedheader = ({
   const [user, setUser] = useState<MyJwtPayload>();
   const [isOpenModalDelete, setIsOpenModalDelete] = useState(false)
   const [isOpenModalReport, setIsOpenModalReport] = useState(false)
+  const navigate = useNavigate();
   // console.log("debug",user.id);
 
   useEffect(() => {
     const fetchUser = async () => {
       const res = await getToken();
+      if(!res) {
+        navigate("auth/login")
+        setUser({email:"",
+          id:0,
+          username:""
+        })
+      }
       const decode = jwtDecode<MyJwtPayload>(res);
       setUser(decode);
     };
@@ -97,20 +106,20 @@ const Feedheader = ({
       <div className="flex gap-[15px]">
         <a href={`/userdetail/${id}`}>
           <img
-            className="w-[49px] h-[49px] rounded-full object-cover"
+            className="2xl:w-[49px] 2xl:h-[49px] lg:w-[39px] lg:h-[39px] rounded-full object-cover"
             src={image}
             alt=""
           />
         </a>
         <div className="flex-col flex">
           <div className="flex gap-1 items-center">
-            <a href={`/userdetail/${id}`} className="text-[16px]">
+            <a href={`/userdetail/${id}`} className="2xl:text-[16px] lg:text-[15px]">
               {username}
             </a>
             <span className="text-[11px] text-[#BABABA]">.</span>
             <span className="text-[11px] text-[#BABABA]">{date}</span>
           </div>
-          <span className="text-[12px] text-[#5F5F5F]">{address}</span>
+          <span className="2xl:text-[12px] lg:text-[11.5px] text-[#5F5F5F]">{address}</span>
         </div>
       </div>
       <div

@@ -10,7 +10,7 @@ const InputChat = ({handleSendChat, user, setChatValue, chatValue}:InputChatProp
                 <div className=" w-full rounded-full h-fit bg-gray-50 flex items-center gap-3 p-2 pr-5">
                   <div className="w-10 h-9 overflow-hidden rounded-full">
                     <img
-                      src={user.image}
+                      src={user?.image}
                       className="w-full h-full object-cover"
                       alt=""
                     />

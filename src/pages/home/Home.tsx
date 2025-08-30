@@ -8,6 +8,7 @@ import { jwtDecode } from "jwt-decode";
 import type { appLayoutProps } from "../layout/type";
 import { getToken } from "../../services/userApi";
 import Saweria from "../../components/ui/Saweria";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
 
@@ -16,11 +17,18 @@ const Home = () => {
     username: "",
     profileImage: "",
   });
+  const navigate = useNavigate();
  
 
   useEffect(() => {
     const fetchUser = async () => {
       const token = await getToken();
+      if(!token) {
+        navigate("auth/login")
+        setData({profileImage:"",
+          username:""
+        })
+      }
       const decode = jwtDecode(token) as appLayoutProps;
       setData({ username: decode.username, profileImage: decode.image });
     };

@@ -10,6 +10,7 @@ import { createNotification } from "../../services/NotifApi";
 import { createBookmark, getBookmark } from "../../services/bookmarkApi";
 import { getToken } from "../../services/userApi";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const InteracFeed = ({
   likeCount,
@@ -22,10 +23,18 @@ const InteracFeed = ({
   const [isLike, setIsLike] = useState();
   const [isBookmark, setIsBookmark] = useState(false);
   const [userLogin, setUserLogin] = useState<MyJwtPayload>()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
       const res = await getToken()
+      if(!res) {
+        navigate("auth/login")
+        setUserLogin({email:"",
+          id:0,
+          username:""
+        })
+      }
       const decode = jwtDecode<MyJwtPayload>(res)
       setUserLogin(decode)      
     }

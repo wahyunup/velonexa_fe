@@ -3,31 +3,31 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { getNotif } from "../../services/NotifApi";
-import { socket } from "../../socket/socket.ts";
-import { getToken } from "../../services/userApi";
-import { jwtDecode } from "jwt-decode";
-import type { appLayoutProps } from "../../pages/layout/type";
+// import { socket } from "../../socket/socket.ts";
+// import { getToken } from "../../services/userApi";
+// import { jwtDecode } from "jwt-decode";
+// import type { appLayoutProps } from "../../pages/layout/type";
 
 const Notification = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [notification, setNotification] = useState<any>([]);
-  const [user_id, setUser_id] = useState(0);
+  // const [user_id, setUser_id] = useState(0);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const token = await getToken();
-      const decode = jwtDecode(token) as appLayoutProps;
-      setUser_id(decode.id);
-    };
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const token = await getToken();
+  //     const decode = jwtDecode(token) as appLayoutProps;
+  //     setUser_id(decode.id);
+  //   };
 
-    fetchUser();
-  }, []);
+  //   fetchUser();
+  // }, []);
 
-  useEffect(() => {
-  if (user_id) {
-    socket.emit("join_user", user_id);
-  }
-}, [user_id]);
+//   useEffect(() => {
+//   if (user_id) {
+//     socket.emit("join_user", user_id);
+//   }
+// }, [user_id]);
 
   useEffect(() => {
     const fetchNotif = async () => {
@@ -36,18 +36,18 @@ const Notification = () => {
     };
     fetchNotif();
 
-    socket.on("new_notification", (newNotif: any) => {
-      setNotification((prev : any) => [newNotif, ...prev]);
-    });
+    // socket.on("new_notification", (newNotif: any) => {
+    //   setNotification((prev : any) => [newNotif, ...prev]);
+    // });
 
-    return () => {
-      socket.off("new_notification");
-    };
+    // return () => {
+    //   socket.off("new_notification");
+    // };
   }, []);
 
   return (
     <>
-      <div className="flex justify-end relative mt-10 mb-10 top-10">
+      <div className="flex justify-end relative 2xl:mt-10 2xl:mb-10 2xl:top-10 lg:top-5 lg:mb-5 lg:mt-5">
         <div
           className="bg-[#dde7ff] hover:bg-[#cddcfd] border-[#d0deff] border p-2 rounded-full relative cursor-pointer"
           onMouseEnter={() => setIsOpen(true)}
@@ -69,7 +69,7 @@ const Notification = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.2 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="bg-white w-lg p-5 rounded-xl absolute top-12 z-[100] max-h-[600px] overflow-y-scroll thin-scrollbar shadow-xl/5 transition-all duration-200 transform"
+              className="bg-white w-lg p-5 rounded-xl absolute top-12 z-[100] 2xl:max-h-[600px] md:max-h-[460px] overflow-y-scroll thin-scrollbar shadow-xl/5 transition-all duration-200 transform"
               onMouseEnter={() => setIsOpen(true)}>
               {/* <h1 className="text-[25px] mt-3 font-medium text-[#101010]">Notification</h1> */}
               <div className="flex flex-col  gap-2">

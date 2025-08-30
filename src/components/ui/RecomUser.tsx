@@ -56,7 +56,7 @@ const RecomUser = ({
   return (
     <>
       <div className="flex justify-between gap-3">
-        <div className="flex gap-[13px]">
+        <div className="flex gap-[13px] items-center">
           <a
             href={`/userdetail/${id}`}
             className="h-[37px] w-[37px] rounded-full overflow-hidden">
@@ -86,7 +86,7 @@ const RecomUser = ({
           ) : (
             <button
               onClick={handleFollow}
-              className="cursor-pointer font-normal text-[12px] px-[16px] py-[5px] bg-[#3971FF] text-white rounded-full">
+              className="cursor-pointer font-normal lg:text-xs lg:px-[10px] 2xl:text-[12px] 2xl:px-[16px] 2xl:py-[5px] bg-[#3971FF] text-white rounded-full">
               Follow
             </button>
           )

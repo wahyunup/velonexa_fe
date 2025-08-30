@@ -1,3 +1,4 @@
+import React from 'react';
 import { IoKeyOutline } from "react-icons/io5";
 import { PiUser } from "react-icons/pi";
 import Input from "../ui/Input";
@@ -11,16 +12,20 @@ const PartialLogin = ({ classname }: { classname: string }) => {
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e: any) => {
     setUseForm({ ...useForm, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = async (e:React.FormEvent) => {
-    e.preventDefault()
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
     try {
-      const res = await axios.post( "https://velonexa-be.vercel.app/users/login", useForm,
+      const res = await axios.post(
+        "https://velonexa-be.vercel.app/users/login",
+        useForm,
         {
           withCredentials: true,
         }
@@ -28,8 +33,10 @@ const PartialLogin = ({ classname }: { classname: string }) => {
       toast.success(res.data.msg, {
         onClose: () => navigate("/"),
       });
+      setIsLoading(false);
     } catch (error: any) {
       toast.warning(error.response?.data?.msg || "Internal server error");
+      setIsLoading(false);
     }
   };
 
@@ -58,20 +65,21 @@ const PartialLogin = ({ classname }: { classname: string }) => {
   return (
     <>
       <div className={classname}>
-        
-        <div className="flex justify-center bg-white h-screen w-[50%] items-center">
-          <form onSubmit={handleLogin} className=" w-[591px] flex flex-col gap-[41px] ">
-            <div className="flex flex-col gap-[68px]">
+        <div className="flex justify-center bg-white h-screen px-5 md:w-[50%] items-center">
+          <form
+            onSubmit={handleLogin}
+            className=" w-[591px] flex flex-col md:gap-[41px] gap-7">
+            <div className="flex flex-col md:gap-[68px] gap-[40px]">
               <div className="flex flex-col gap-[11px]">
-                <h1 className="text-[37px] font-semibold">
+                <h1 className="md:text-[37px] text-3xl font-semibold">
                   Log in to your Account
                 </h1>
-                <p className="text-[18px] font-medium">
+                <p className="md:text-[18px] font-medium">
                   welcome back!, select method to login
                 </p>
               </div>
 
-              <div className="flex flex-col gap-[23px]">
+              <div className="flex flex-col md:gap-[23px] gap-4">
                 <Input
                   name="email"
                   onchange={handleChange}
@@ -93,10 +101,18 @@ const PartialLogin = ({ classname }: { classname: string }) => {
 
             <button
               type="submit"
-              className="bg-gradient-to-b from-[#3971FF] to-[#184dd3] hover:bg-gradient-to-t p-[10px] text-white rounded-xl w-full h-[68px] text-[25px] font-medium cursor-pointer ">
-              Login
+              disabled={isLoading}
+              className={`${isLoading ? "bg-[#a6bfff]" : "bg-gradient-to-b from-[#3971FF] to-[#184dd3] hover:bg-gradient-to-t"} p-[10px] text-white rounded-xl w-full h-[68px] md:text-[25px] text-xl font-medium cursor-pointer border-1 border-blue-500 flex justify-center items-center`}>
+              {isLoading ? (
+                <>
+                <img className='w-8 h-8 animate-ping absolute' src="/logo/logo-velonexa.png" alt="" />
+                <img className='w-8 h-8' src="/logo/logo-velonexa.png" alt="" />
+                </>
+              ) : (
+                "Login"
+              )}
             </button>
-            <p className="text-center">
+            <p className="text-center text-sm md:text-lg">
               Dont have account?{" "}
               <span
                 onClick={() => navigate("/auth/register")}
@@ -108,11 +124,11 @@ const PartialLogin = ({ classname }: { classname: string }) => {
           </form>
         </div>
 
-        <div className="w-[50%] h-screen overflow-hidden">
+        <div className="md:w-[50%] hidden md:inline h-screen overflow-hidden">
           <img
             className="bg-cover w-full h-full"
-            src="/src/assets/banner.jpg"
-            alt=""
+            src="/background/sosmed-banner.jpg"
+            alt="banner"
           />
         </div>
         <ToastContainer />

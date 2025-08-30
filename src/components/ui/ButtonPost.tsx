@@ -10,7 +10,7 @@ const ButtonPost = ({username, profileImage}:{username:string, profileImage : st
   };
   return (
     <div>
-      <button onClick={handleIsOpen} className="w-[281px] h-[258px] bg-white rounded-2xl  border-[#DCDCDC] flex justify-center items-center flex-col border-dashed border-2 cursor-pointer">
+      <button onClick={handleIsOpen} className="2xl:w-full 2xl:h-[258px] lg:w-full lg:h-[230px] bg-white rounded-2xl  border-[#DCDCDC] lg:hidden 2xl:flex justify-center items-center flex-col border-dashed border-2 cursor-pointer">
         <GoPlus size={97} color="#E9E9E9" />
         <span className="text-[13px] text-[#D3D3D3]">media</span>
       </button>

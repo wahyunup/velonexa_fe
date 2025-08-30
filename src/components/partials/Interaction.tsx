@@ -15,7 +15,7 @@ const Interaction = ({
   return (
     <div className="sticky top-0 right-0 flex flex-col gap-6">
       <Notification/>
-      <h1 className="text-[24px] font-medium">Created</h1>
+      <h1 className="2xl:text-[24px] lg:text-[20px] font-medium lg:hidden 2xl:block">Created</h1>
       <ButtonPost profileImage={profileImage} username={username} />
       <RecomFoll />
         

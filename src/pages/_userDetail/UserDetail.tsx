@@ -3,7 +3,7 @@ import { detailUser, getToken, getUserDetail } from "../../services/userApi";
 import AppLayout from "../layout/AppLayout";
 import UserDetailHeader from "../../components/partials/UserDetailHeader";
 import UserDetailFeed from "../../components/partials/UserDetailFeed";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import type { GetFeedProps, MyJwtPayload } from "../../components/ui";
 import PostingOverview from "../../components/partials/PostingOverview";
@@ -18,6 +18,7 @@ import { BsBookmarkCheck, BsBookmarkCheckFill } from "react-icons/bs";
 import { IoImage, IoImageOutline } from "react-icons/io5";
 import { IoLockClosedOutline } from "react-icons/io5";
 import { GoBookmarkSlash } from "react-icons/go";
+import { CiImageOff } from "react-icons/ci";
 
 const UserDetail = () => {
   const [user, setUser] = useState({
@@ -42,6 +43,7 @@ const UserDetail = () => {
   const [isFollow, setIsFollow] = useState(false);
   const [currentUser_id, setCurrentUser_id] = useState(0);
   const [isActive, setIsActive] = useState("post");
+  const navigate = useNavigate();
 
   const { id } = useParams();
   const userId = Number(id);
@@ -49,6 +51,13 @@ const UserDetail = () => {
   useEffect(() => {
     const fetchUser = async () => {
       const res = await getToken();
+      if(!res) {
+        navigate("auth/login")
+        setUserLogin({email:"",
+          id:0,
+          username:""
+        })
+      }
       const decode = jwtDecode<MyJwtPayload>(res);
       setUserLogin(decode);
     };
@@ -130,7 +139,7 @@ const UserDetail = () => {
   return (
     <>
       <AppLayout
-        classname={`${!loading ? "justify-between items-center" : ""}`}>
+        classname={`${!loading ? "justify-between" : ""}`}>
         {!loading ? (
           <>
             {/* <FaSpinner size={23} className="animate-spin" /> */}
@@ -181,17 +190,36 @@ const UserDetail = () => {
                     <span className="text-lg">Saved</span>
                   </button>
                 </div>
-                <div className="grid grid-cols-3 gap-3 mt-[63px]">
+
+                <div className="grid grid-cols-3 gap-3 mt-[63px] mb-[20px] md:px-[150px] 2xl:px-[0px]">
                   {isActive === "post" ? (
                     <>
-                      {feed.map((f: GetFeedProps) => (
-                        <div
+                      {
+                      feed.length > 0 ? (
+
+                        feed.map((f: GetFeedProps) => (
+                          <div
                           key={f.id}
                           className=" aspect-square overflow-hidden cursor-pointer"
                           onClick={() => handleSelectedFeed(f)}>
                           <UserDetailFeed image={f.image} />
                         </div>
-                      ))}
+                      ))
+                    ) : (
+                    <>
+                    <div></div>
+                          <div className="flex flex-col items-center gap-5">
+                            <CiImageOff size={40}/>
+                            <h1 className="text-[21px] font-medium text-center ">No feed Posts Yet</h1>
+                            <p className=" text-center text-[16px]">
+                             Create posts to easily find them again later.
+                            </p>
+                          </div>
+                          <div></div>
+                    </>
+                    )
+                      
+                      }
                     </>
                   ) : isActive === "saved" ? (
                     <>

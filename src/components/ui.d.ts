@@ -7,8 +7,8 @@ export interface ButtonProps {
 }
 
 export interface SidebarNavProps {
-  children: ReactNode;
-  href: string;
+  children?: ReactNode;
+  href?: string;
   icon: ReactNode;
   isRead?: boolean;
 }
@@ -98,6 +98,7 @@ export interface InputChatProps {
 export interface BodyChatProps {
   user: any;
   bodyChat: any;
+  isLoading: boolean
 }
 
 export interface CommentProps {

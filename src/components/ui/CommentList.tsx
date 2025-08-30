@@ -17,9 +17,6 @@ const CommentList = ({
   image
 }: CommentListProps) => {
   const [isLikeComment, setIsLikeComment] = useState(false);
-
-  console.log("isLike ==>", isLikeComment);
-  console.log("username", username, user_id, field_comment);
   
 
   const handleLikeComment = async () => {
@@ -51,22 +48,22 @@ const CommentList = ({
 
   return (
     <>
-      <div className="py-[12px] even:bg-gray-50  rounded-2xl p-5">
+      <div className="py-[12px] even:bg-gray-50 rounded-2xl p-5">
         <div className="py-[10px] flex gap-[13px] items-center">
-          <div className="w-[37px] h-[37px] overflow-hidden rounded-full">
+          <div className="2xl:w-[37px] 2xl:h-[37px] lg:w-[32px] lg:h-[32px] overflow-hidden rounded-full">
             <img
               className="object-cover h-full w-full "
               src={image}
               alt=""
             />
           </div>
-          <span className="text-[15px] font-medium">{username}</span>
+          <span className="2xl:text-[15px] lg:text-sm font-medium">{username}</span>
         </div>
 
         <div className="flex flex-col gap-[9px]">
           <div className="flex justify-between">
             <p
-              className="text-[14px] text-[#535353] cursor-pointer"
+              className="2xl:text-[14px] lg:text-[13px] text-[#535353] cursor-pointer"
               onDoubleClick={handleLikeComment}>
               {field_comment}
             </p>
@@ -87,7 +84,7 @@ const CommentList = ({
               {createdAt}
             </span>
 
-            <button className="text-[#535353] text-[14px] font-medium cursor-pointer">
+            <button className="text-[#535353] 2xl:text-[14px] lg:text-[12px] font-medium cursor-pointer">
               reply
             </button>
           </div>
