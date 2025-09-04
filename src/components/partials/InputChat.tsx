@@ -1,7 +1,9 @@
 import { LuSend } from "react-icons/lu"
 import type { InputChatProps } from "../ui"
+import { SyncLoader } from "react-spinners"
 
-const InputChat = ({handleSendChat, user, setChatValue, chatValue}:InputChatProps) => {
+const InputChat = ({handleSendChat, user, setChatValue, chatValue, isLoadingSendComment}:InputChatProps) => {
+  
     return (
         <>
          <form
@@ -21,9 +23,18 @@ const InputChat = ({handleSendChat, user, setChatValue, chatValue}:InputChatProp
                     type="text"
                     className="outline-0 w-full"
                   />
-                  <button className="cursor-pointer" type="submit">
-                    <LuSend size={18} color="#0047FF" />
-                  </button>
+                {isLoadingSendComment ? (
+          <SyncLoader
+            size={8}
+            margin={1}
+            color="#3971FF"
+            speedMultiplier={0.5}
+          />
+        ) : (
+          <button type="submit" className="cursor-pointer">
+            <LuSend size={20} color="#0047FF" />
+          </button>
+        )}
                 </div>
               </form>
         </>

@@ -57,7 +57,7 @@ const CommentList = ({
               alt=""
             />
           </div>
-          <span className="2xl:text-[15px] lg:text-sm font-medium">{username}</span>
+          <span className="2xl:text-sm lg:text-sm font-medium">{username}</span>
         </div>
 
         <div className="flex flex-col gap-[9px]">

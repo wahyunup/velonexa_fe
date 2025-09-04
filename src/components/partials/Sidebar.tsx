@@ -29,6 +29,7 @@ const Sidebar = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const logOut = async () => {
+    setIsLoading(false)
     try {
       const res = await axios.patch(
         "https://velonexa-be.vercel.app/users/logout",
@@ -38,6 +39,7 @@ const Sidebar = () => {
         }
       );
       setIsOpen(false);
+      setIsLoading(true)
       console.log(res.data.msg);
       return toast.success(res.data?.msg, {
         onClose: () => navigate("/auth/login"),
@@ -215,7 +217,7 @@ const Sidebar = () => {
         <ConfirmationModal
           heading="Leaving So Soon?"
           subheading="You’ll be signed out of your account. Don’t worry, you can log back in anytime."
-          lableTrue="Logout"
+          lableTrue={isLoading ? "Logout" : "loading..."}
           handleFalse={() => setIsOpen(false)}
           handleTrue={logOut}
         />

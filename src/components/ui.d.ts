@@ -93,6 +93,7 @@ export interface InputChatProps {
   user: any;
   setChatValue: any;
   chatValue: any;
+  isLoadingSendComment : boolean
 }
 
 export interface BodyChatProps {

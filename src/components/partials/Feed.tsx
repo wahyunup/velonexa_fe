@@ -18,6 +18,7 @@ const Feed = () => {
   const [postingOverview, setPostingOverview] = useState(false);
   const [selectedFeed, setSelectedFeed] = useState<GetFeedProps | null>(null);
 
+
   const getFeed = async () => {
     try {
       const res = await axios.get(
@@ -68,7 +69,7 @@ const Feed = () => {
         <div className="flex justify-center my-10">
           <button
             onClick={handlePrevPagination}
-            className="bg-gray-100 outline-[#3971FF] text-[15px] text-[#3971FF] animate-bounce rounded-full outline px-5 py-2 flex flex-row-reverse items-center justify-center gap-2">
+            className="bg-gray-100 outline-[#3971FF] text-[15px] text-[#3971FF] animate-bounce rounded-full outline px-5 py-2 flex flex-row-reverse items-center justify-center gap-2 cursor-pointer">
             load previous <FaArrowUpLong />
           </button>
         </div>
@@ -124,7 +125,7 @@ const Feed = () => {
         <div className="flex justify-center my-10">
           <button
             onClick={handlePagination}
-            className="bg-gray-100 outline-[#3971FF] text-[15px] text-[#3971FF] animate-bounce rounded-full outline px-5 py-2 flex flex-row-reverse items-center justify-center gap-2">
+            className="bg-gray-100 outline-[#3971FF] text-[15px] text-[#3971FF] animate-bounce rounded-full outline px-5 py-2 flex flex-row-reverse items-center justify-center gap-2 cursor-pointer">
             load more <FaArrowDownLong />
           </button>
         </div>

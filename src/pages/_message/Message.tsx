@@ -28,6 +28,8 @@ const Message = () => {
   const [isLoadingBody, setIsLoadingBody] = useState(false);
   const [isOpenUserList, setIsOpenUserList] = useState(false);
   const [allUser, setAllUser] = useState([]);
+  const [isLoadingSendComment, setIsLoadingSendComment] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,7 +37,7 @@ const Message = () => {
       const res = await getToken();
       if (!res) {
         navigate("auth/login");
-        setUser({id:0})
+        setUser({ id: 0 });
       }
       const decode = jwtDecode<UserProps>(res);
       setUser(decode);
@@ -52,16 +54,39 @@ const Message = () => {
     fetchAllUser();
   }, []);
 
-  useEffect(() => {
-    const fetchBodyChat = async () => {
-      if (!selectedChat) return;
-      setIsLoadingBody(true);
+ useEffect(() => {
+  if (!selectedChat) return;
+
+  
+  // fetch pertama sekali (untuk tampilan awal)
+  const fetchFirst = async () => {
+    setIsLoadingBody(true);
+    try {
       const res = await getChatCurrentUser(selectedChat.id);
       setBodyChat(res.chat);
+      setIsLoadingBody(false); // loading selesai setelah fetch pertama
+    } catch (err) {
+      console.error(err);
       setIsLoadingBody(false);
-    };
-    fetchBodyChat();
-  }, [selectedChat]);
+    }
+  };
+
+  fetchFirst();
+
+  // polling data tiap 1 detik TANPA set loading
+  const interval = setInterval(async () => {
+    try {
+      const res = await getChatCurrentUser(selectedChat.id);
+      setBodyChat(res.chat);
+    } catch (err) {
+      console.error(err);
+    }
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, [selectedChat]);
+
+
 
   useEffect(() => {
     setIsLoading(true);
@@ -70,7 +95,15 @@ const Message = () => {
       setUserChatList(res.users);
       setIsLoading(false);
     };
+
     fetchChats();
+
+    const interval = setInterval( async() => {
+      const res = await getChat();
+      setUserChatList(res.users);
+    },1000)
+
+    return () => clearInterval(interval)
   }, []);
 
   const handleShowDetailChat = (chat: userChatListProps) => {
@@ -81,10 +114,11 @@ const Message = () => {
   const handleSendChat = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!selectedChat) return;
+    setIsLoadingSendComment(true)
 
     const res = await createNewChat(chatValue, selectedChat.id);
     setChatValue("");
-
+setIsLoadingSendComment(false)
     return res;
   };
 
@@ -131,13 +165,14 @@ const Message = () => {
             </div>
           ) : (
             <div className="h-screen flex flex-col justify-between bg-red">
-              <div className="h-full overflow-y-scroll thin-scrollbar bg-cover bg-center relative" style={{backgroundImage:"url('/background/background-chat.jpg')",
-              backgroundSize:"500px",
-              backgroundColor:"rgba(0, 0, 0, 0.05)",
-              backgroundBlendMode : "overlay"
-              }}>
-
-               
+              <div
+                className="h-full overflow-y-scroll thin-scrollbar bg-cover bg-center relative"
+                style={{
+                  backgroundImage: "url('/background/background-chat.jpg')",
+                  backgroundSize: "500px",
+                  backgroundColor: "rgba(0, 0, 0, 0.05)",
+                  backgroundBlendMode: "overlay",
+                }}>
                 {/* header chatt */}
                 <div className="flex sticky top-0 z-10  gap-[10px] items-center bg-white border-b-1 border-[#F4F4F4] py-[15px] px-[20px] ">
                   <div className="w-[54px] h-[54px] overflow-hidden rounded-full">
@@ -164,6 +199,7 @@ const Message = () => {
                 handleSendChat={handleSendChat}
                 chatValue={chatValue}
                 setChatValue={setChatValue}
+                isLoadingSendComment={isLoadingSendComment}
                 user={user}
               />
             </div>
